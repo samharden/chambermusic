@@ -62,6 +62,11 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 45 = "Viola leads; darker"
 47 = "Violin II takes the motion"
 49 = "Piano: broaden, no pedal"
+51 = "Stretto: the semitone version, entries every half bar"
+53 = "Piano: the whole-tone version, against"
+55 = "Gb becomes F#: the piano's A-natural returns"
+57 = "G major, V of C. Both descents at once"
+59 = "Subito p; piano flowing in G, with pedal"
 
 # Turn 01: one twelve-bar opening gesture, passed between players.
 # C-G-Ab-G is challenged by the piano's A-natural; bar 12 leaves Ab over G.
@@ -86,6 +91,13 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 # flattened sixth, and transfer the running figure to Violin II in Eb minor.
 # The piano takes the augmented semitone gesture and settles on Gb major.
 # B in the new bars sounds as Cb: the current engraver respells Cb as B.
+#
+# Turn 06: bars 51-60. Stretto of the semitone version in Eb minor; the piano
+# answers with the whole-tone version. Bar 55 the piano replays its bar 4
+# challenge over Gb2: Gb-A-C-Eb is a diminished seventh, Gb is F#, and it
+# resolves onto G major, V of C, at 56-57. Bar 58 the strings descend
+# C-Bb-Ab-G in three octaves while the piano descends C-B-A-G. Bars 59-60
+# the piano alone, p, runs the bar 33 figure in G and keeps going.
 
 [[part]]
 id = "vn1"
@@ -142,6 +154,13 @@ mark = "mp"
 bar = 49
 mark = "p"
 
+[[part.dynamic]]
+bar = 52
+mark = "mf"
+[[part.dynamic]]
+bar = 57
+mark = "ff"
+
 [[part.voice]]
 id = "vn1"
 staff = 1
@@ -197,6 +216,16 @@ bars = [
   "F5:2 Eb5:2 Db5:2 r:2",  # 48
   "r:8",  # 49
   "r:8",  # 50
+  "r:8",  # 51
+  "r:4 Gb5:3 Db6:1",  # 52
+  "D6:2 Db6:2 Bb5:2 Gb5:2",  # 53
+  "r:8",  # 54
+  "r:8",  # 55
+  "r:8",  # 56
+  "G4:3 D5:1 Eb5:2 D5:2",  # 57
+  "C5:2 Bb4:2 Ab4:2 G4:2",  # 58
+  "r:8",  # 59
+  "r:8",  # 60
 ]
 
 [[part]]
@@ -267,6 +296,19 @@ mark = "mf"
 bar = 49
 mark = "p"
 
+[[part.dynamic]]
+bar = 52
+mark = "mf"
+[[part.dynamic]]
+bar = 54
+mark = "mp"
+[[part.dynamic]]
+bar = 55
+mark = "f"
+[[part.dynamic]]
+bar = 57
+mark = "ff"
+
 [[part.voice]]
 id = "vn2"
 staff = 1
@@ -322,6 +364,16 @@ bars = [
   "Ab3:1 B3:1 Eb4:1 Ab4:1 Bb4:1 Ab4:1 Eb4:1 B3:1",  # 48
   "r:8",  # 49
   "r:4 Db5:4",  # 50
+  "r:8",  # 51
+  "Eb5:3 Bb5:1 B5:2 Bb5:2",  # 52
+  "Ab5:2 Gb5:2 F5:2 Eb5:2",  # 53
+  "r:4 B4:2 Bb4:2",  # 54
+  "r:4 Eb5:4",  # 55
+  "Eb5:4 D5:4",  # 56
+  "r:4 G4:3 D5:1",  # 57
+  "Eb5:2 D5:2 r:4",  # 58
+  "r:8",  # 59
+  "r:8",  # 60
 ]
 
 [[part]]
@@ -386,6 +438,19 @@ mark = "p"
 bar = 50
 mark = "pp"
 
+[[part.dynamic]]
+bar = 51
+mark = "mp"
+[[part.dynamic]]
+bar = 53
+mark = "mf"
+[[part.dynamic]]
+bar = 55
+mark = "f"
+[[part.dynamic]]
+bar = 57
+mark = "ff"
+
 [[part.voice]]
 id = "va"
 staff = 1
@@ -441,6 +506,16 @@ bars = [
   "r:8",  # 48
   "r:8",  # 49
   "r:6 Gb3:2",  # 50
+  "r:4 Eb4:3 Bb4:1",  # 51
+  "B4:2 Bb4:2 r:4",  # 52
+  "r:4 Eb4:3 Bb4:1",  # 53
+  "B4:2 Bb4:2 r:4",  # 54
+  "r:2 C4:6",  # 55
+  "C4:4 B3:4",  # 56
+  "B3:4 D4:4",  # 57
+  "C4:2 Bb3:2 Ab3:2 G3:2",  # 58
+  "r:8",  # 59
+  "r:8",  # 60
 ]
 
 [[part]]
@@ -514,6 +589,16 @@ mark = "mp"
 bar = 47
 mark = "p"
 
+[[part.dynamic]]
+bar = 51
+mark = "mp"
+[[part.dynamic]]
+bar = 55
+mark = "f"
+[[part.dynamic]]
+bar = 57
+mark = "ff"
+
 [[part.voice]]
 id = "vc"
 staff = 1
@@ -569,6 +654,16 @@ bars = [
   "r:4 B2:2 Bb2:2",  # 48
   "r:4 Gb3:2 F3:2",  # 49
   "r:2 Db3:2 r:4",  # 50
+  "Eb3:3 Bb3:1 B3:2 Bb3:2",  # 51
+  "Ab3:2 Gb3:2 F3:2 Eb3:2",  # 52
+  "r:8",  # 53
+  "r:8",  # 54
+  "Eb3:8",  # 55
+  "Eb3:4 D3:4",  # 56
+  "G2:4 r:4",  # 57
+  "C3:2 Bb2:2 Ab2:2 G2:2",  # 58
+  "r:8",  # 59
+  "r:8",  # 60
 ]
 
 [[part]]
@@ -648,6 +743,16 @@ mark = "mp"
 bar = 50
 mark = "p"
 
+[[part.dynamic]]
+bar = 53
+mark = "f"
+[[part.dynamic]]
+bar = 57
+mark = "ff"
+[[part.dynamic]]
+bar = 59
+mark = "p"
+
 [[part.voice]]
 id = "rh"
 staff = 1
@@ -703,6 +808,16 @@ bars = [
   "r:4 Gb4:2 F4:2",  # 48
   "Eb4:6 Bb4:2",  # 49
   "B4:4 Bb4:4",  # 50
+  "r:8",  # 51
+  "r:8",  # 52
+  "Eb5:3 Bb5:1 C6:2 Bb5:2",  # 53
+  "Ab5:2 G5:2 F5:2 Eb5:2",  # 54
+  "C5:3 G5:1 A5:2 G5:2",  # 55
+  "C5:3 G5:1 A5:2 G5:2",  # 56
+  "G5:3 D6:1 E6:2 D6:2",  # 57
+  "C6:2 B5:2 A5:2 G5:2",  # 58
+  "D4:1 G4:1 B4:1 D5:1 E5:1 D5:1 B4:1 G4:1",  # 59
+  "D4:1 G4:1 B4:1 D5:1 E5:1 D5:1 B4:1 G4:1",  # 60
 ]
 [[part.voice]]
 id = "lh"
@@ -759,4 +874,14 @@ bars = [
   "Ab2:4 r:4",  # 48
   "Eb2:4 r:4",  # 49
   "Gb2,Db3:8",  # 50
+  "r:8",  # 51
+  "r:8",  # 52
+  "Eb3:3 Bb3:1 C4:2 Bb3:2",  # 53
+  "Ab3:2 G3:2 F3:2 Eb3:2",  # 54
+  "Gb2:8",  # 55
+  "Gb2:4 G2:4",  # 56
+  "G2:3 D3:1 E3:2 D3:2",  # 57
+  "r:8",  # 58
+  "G2:4 D3:4",  # 59
+  "G2:4 D3:4",  # 60
 ]
