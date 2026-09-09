@@ -499,6 +499,10 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                                        + "".join(notations) + '</notations>')
                         out.append('      </note>')
                     pending = set(event["pitches"]) if event["tie"] else set()
+            if meta.get("complete", False) and bar == n_bars:
+                out += ['      <barline location="right">',
+                        '        <bar-style>light-heavy</bar-style>',
+                        '      </barline>']
             out.append('    </measure>')
         out.append('  </part>')
     out.append('</score-partwise>')

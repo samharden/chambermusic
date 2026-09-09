@@ -10,12 +10,13 @@ import build
 import verovio
 
 
-def notation(bars, key="C", other_hand=None):
+def notation(bars, key="C", other_hand=None, complete=False):
     voices = [{"id": "rh", "staff": 1, "clef": "treble", "bars": bars}]
     if other_hand:
         voices.append({"id": "lh", "staff": 2, "clef": "bass",
                        "bars": other_hand})
     doc = {
+        "meta": {"complete": complete},
         "settings": {"key": key},
         "_derived": {"meter": "4/4", "beats": 4, "beat_type": 4,
                      "unit": "eighth", "per_unit": 12, "units_per_bar": 8},
@@ -32,6 +33,14 @@ def symbols(xml):
 
 
 class Accidentals(unittest.TestCase):
+    def test_final_barline_only_for_complete_score(self):
+        xml = ET.fromstring(notation(["C4:8", "C4:8"], complete=True))
+        measures = xml.findall("./part/measure")
+        self.assertIsNone(measures[0].find("barline"))
+        self.assertEqual(measures[1].findtext("barline/bar-style"), "light-heavy")
+        draft = ET.fromstring(notation(["C4:8", "C4:8"]))
+        self.assertEqual(draft.findall(".//barline"), [])
+
     def test_repeat_cancellation_and_bar_reset(self):
         xml = notation(["Ab4:2 Ab4:2 A4:2 Ab4:2", "Ab4:8"])
         self.assertEqual(symbols(xml), ["flat", "natural", "flat", "flat"])
