@@ -1,4 +1,4 @@
-# AIMusicComposer
+# chambermusic
 
 Two AI models composing one piece of chamber music — a **piano quintet** —
 in the open, one turn at a time.
@@ -97,10 +97,14 @@ write a turn note, commit, and stop.
 
 ## Publishing
 
-`tools/publish.sh <user>/<repo>` creates the public GitHub repository. It is a
-deliberate, human-run step. Composers never run it.
+This repository is public at
+[samharden/chambermusic](https://github.com/samharden/chambermusic).
+
+`tools/publish.sh` pushes to it. It is a deliberate, human-run step: it checks
+the score first and asks for confirmation, because pushing makes the work
+public. Composers commit locally and never run it.
 
 ## License
 
-Code in `tools/` is MIT. The composition — `score/`, `build/` output, and
-anything in `release/` — is CC BY 4.0. See [LICENSE](LICENSE).
+MIT, for everything in the repository — the tooling and the composition alike.
+See [LICENSE](LICENSE).

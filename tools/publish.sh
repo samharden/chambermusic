@@ -1,51 +1,58 @@
 #!/usr/bin/env bash
-# Publish this repository to a NEW PUBLIC repository on GitHub.
+# Push this repository to its public home on GitHub.
 #
-# This is deliberately a manual step. Running it makes the work public and
-# is not easily undone, so no composing turn should ever invoke it. A human
-# runs this, once, when the piece is ready to be seen.
+# This is deliberately a manual step. Pushing makes the work visible to anyone
+# on the internet and is not easily undone, so no composing turn should ever
+# invoke it. A human runs this when the work is ready to be seen.
 #
-# Usage: tools/publish.sh <github-user>/<repo-name>
+# Usage: tools/publish.sh
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-TARGET="${1:-}"
-if [ -z "$TARGET" ]; then
-  echo "Usage: tools/publish.sh <github-user>/<repo-name>"
-  echo "Example: tools/publish.sh samharden/ai-music-composer"
+REMOTE="${1:-origin}"
+
+if ! git remote get-url "$REMOTE" >/dev/null 2>&1; then
+  echo "No git remote named '$REMOTE'. Add one with:"
+  echo "  git remote add origin git@github.com:<user>/<repo>.git"
+  exit 1
+fi
+URL="$(git remote get-url "$REMOTE")"
+
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+if [ -n "$(git status --porcelain)" ]; then
+  echo "The working tree has uncommitted changes. Commit them first:"
+  git status --short
   exit 1
 fi
 
-if ! command -v gh >/dev/null 2>&1; then
-  cat <<'MSG'
-The GitHub CLI ('gh') is not installed, so this script cannot create the
-repository for you. Two options:
+./tools/check.sh || {
+  echo "The score does not pass its checks. Fix it before publishing."
+  exit 1
+}
 
-  A. Install it, then re-run this script:
-       brew install gh
-       gh auth login
+git fetch --quiet "$REMOTE" "$BRANCH" 2>/dev/null || true
+AHEAD="$(git rev-list --count "$REMOTE/$BRANCH..$BRANCH" 2>/dev/null || echo "?")"
+BEHIND="$(git rev-list --count "$BRANCH..$REMOTE/$BRANCH" 2>/dev/null || echo 0)"
 
-  B. Do it by hand:
-       1. Create an empty PUBLIC repo on github.com (no README, no license,
-          no .gitignore — this repo already has them).
-       2. Then run:
-            git remote add origin git@github.com:<user>/<repo>.git
-            git push -u origin main
-MSG
+if [ "$BEHIND" != "0" ]; then
+  echo "The remote has $BEHIND commit(s) you do not have. Pull and reconcile"
+  echo "before publishing, so nothing is overwritten:"
+  echo "  git pull --rebase $REMOTE $BRANCH"
   exit 1
 fi
-
-echo "About to create a PUBLIC repository: $TARGET"
-echo "Everything committed here becomes visible to anyone on the internet."
-printf 'Type the repo name again to confirm: '
-read -r confirm
-if [ "$confirm" != "$TARGET" ]; then
-  echo "Names did not match. Nothing was published."
-  exit 1
+if [ "$AHEAD" = "0" ]; then
+  echo "Nothing to publish: $REMOTE/$BRANCH already matches $BRANCH."
+  exit 0
 fi
 
-./tools/check.sh || { echo "Score does not pass checks. Fix it before publishing."; exit 1; }
-
-gh repo create "$TARGET" --public --source=. --remote=origin --push
+echo "About to push $AHEAD commit(s) on '$BRANCH' to a PUBLIC repository:"
+echo "  $URL"
+git log --oneline "$REMOTE/$BRANCH..$BRANCH" | sed 's/^/    /'
 echo
-echo "Published: https://github.com/$TARGET"
+printf "Type 'publish' to confirm: "
+read -r confirm
+[ "$confirm" = "publish" ] || { echo "Nothing was pushed."; exit 1; }
+
+git push "$REMOTE" "$BRANCH"
+echo
+echo "Published: ${URL%.git}"

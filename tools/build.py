@@ -357,7 +357,7 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
            '  <identification>',
            f'    <creator type="composer">'
            f'{esc(", ".join(meta.get("composers", [])))}</creator>',
-           '    <encoding><software>AIMusicComposer tools/build.py</software>'
+           '    <encoding><software>chambermusic tools/build.py</software>'
            '</encoding>',
            '  </identification>',
            '  <part-list>']
