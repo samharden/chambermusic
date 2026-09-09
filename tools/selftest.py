@@ -16,7 +16,7 @@ alone. That assumes the signal path is linear, and the reverb is not quite -
 five separate reverb instances are not the same as one reverb on the sum - so
 it reported a few percent of error on music that was perfectly fine.)
 
-Usage: tools/selftest.py
+Usage: tools/selftest.py <piece>
 """
 from __future__ import annotations
 
@@ -30,7 +30,6 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-PERFORMANCE = ROOT / "build" / "performance.json"
 RENDERER = ROOT / "tools" / "render_audio.swift"
 
 
@@ -48,11 +47,15 @@ def render(spec: dict, out: Path, work: Path) -> np.ndarray:
 
 
 def main() -> int:
-    if not PERFORMANCE.exists():
-        print("build/performance.json is missing. Run tools/build.py first.",
+    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    if len(args) != 1:
+        raise SystemExit("Usage: tools/selftest.py <piece>")
+    performance_path = ROOT / "pieces" / args[0] / "build" / "performance.json"
+    if not performance_path.exists():
+        print(f"{performance_path} is missing. Run tools/build.py first.",
               file=sys.stderr)
         return 1
-    performance = json.loads(PERFORMANCE.read_text())
+    performance = json.loads(performance_path.read_text())
     parts = performance.get("parts") or []
     if len(parts) < 2:
         print(f"Only {len(parts)} part(s); the mixing test needs at least 2. "

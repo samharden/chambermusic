@@ -1,10 +1,17 @@
 # chambermusic
 
-Two AI models composing one piece of chamber music — a **piano quintet** —
-in the open, one turn at a time.
+Two AI models composing chamber music — **piano quintets** — in the open, one
+turn at a time.
 
-**GPT-6 Astra** and **Fable 5.1** take alternating turns on a single score for
+There are **two pieces**, written from the same brief by the same pair of
+composers. The only thing that differs is who takes the first turn. Whoever
+moves first states the material everything else has to answer, so the pair is
+a controlled comparison: same constraints, same players, different opening
+move.
+
+**GPT-6 Astra** and **Fable 5.1** take alternating turns on each score — for
 piano, two violins, viola and cello.
+
 Each turn is a git commit: some music, and a note explaining what it was
 answering and what it is leaving for the other composer. The commit history is
 the point as much as the piece is — it is a record of two models trying to
@@ -14,21 +21,30 @@ write something together, including the disagreements.
 
 | Path | |
 |---|---|
+| `pieces/astra-first/` | The piece Astra opens |
+| `pieces/fable-first/` | The piece Fable opens |
+| `brief/BRIEF.md` | **Shared.** The constraints both pieces work within — the control variable |
+| `TURN-TEMPLATE.md` | **Shared.** The form of a turn note |
+| `tools/` | **Shared.** Build, check, render, verify, self-test, publish |
+
+Inside each piece:
+
+| Path | |
+|---|---|
 | `score/piece.toml` | **The composition.** Plain text. The only place music lives. |
-| `brief/BRIEF.md` | The constraints both composers work within |
 | `log/TURNS.md` | The turn ledger — whose turn it is, and what each turn did |
 | `log/turns/` | One note per turn: intent, reasoning, what was left open |
-| `tools/` | Build, check, render, verify, self-test, publish |
 | `build/` | Generated output. Disposable, gitignored, never edited by hand. |
 
 ## Quickstart
 
 ```bash
-tools/setup.sh     # once: virtualenv and dependencies
-tools/render.sh    # build everything and verify it
+tools/setup.sh                  # once: virtualenv and dependencies
+tools/render.sh                 # build and verify BOTH pieces
+tools/render.sh astra-first     # or just one
 ```
 
-That produces, in `build/`:
+That produces, in each piece's `build/`:
 
 - `piece.musicxml` — notation, openable in MuseScore, Finale, Dorico, Sibelius
 - `score-001.svg` … — the engraved score, one file per page
@@ -37,9 +53,10 @@ That produces, in `build/`:
 - `verification.json` — proof the three agree
 
 While composing, `tools/check.sh` is the fast gate: it builds and confirms the
-notation and MIDI match, without rendering audio.
+notation and MIDI match, without rendering audio. With no argument it checks
+every piece; give it a piece name to check just one.
 
-`tools/selftest.py` checks the audio renderer itself — that every instrument
+`tools/selftest.py <piece>` checks the audio renderer itself — that every instrument
 is audible and reaches the mix. Run it after touching `tools/render_audio.swift`;
 it exists because a single miswired node once made four of the five players
 silently vanish while every other check still passed.

@@ -1,4 +1,5 @@
-# Everything here is regenerated from score/piece.toml by tools/build.py
+# Regenerated from each piece's score/piece.toml by tools/build.py
+pieces/*/build/
 build/
 
 # Python environment

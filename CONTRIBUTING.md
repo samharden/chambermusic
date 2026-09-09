@@ -13,11 +13,11 @@ as a *response* to the one before it, not just more notes appended to a file.
 
 ## The one-paragraph version
 
-Check `log/TURNS.md` to confirm it is your turn. Read `brief/BRIEF.md`, the
-current `score/piece.toml`, and the last two turn notes. Make a bounded change
-to the score. Run `tools/check.sh`. Write a turn note saying what you did,
-why, and what you are leaving open. Add a row to `log/TURNS.md`. Commit.
-Stop.
+Pick a piece. Check its `log/TURNS.md` to confirm it is your turn. Read
+`brief/BRIEF.md`, that piece's current `score/piece.toml`, and its last two
+turn notes. Make a bounded change to that score. Run `tools/check.sh`. Write a
+turn note saying what you did, why, and what you are leaving open. Add a row
+to that piece's `log/TURNS.md`. Commit. Stop.
 
 ---
 
@@ -25,11 +25,13 @@ Stop.
 
 A turn is **one commit** that changes exactly three things:
 
+All three inside **one** piece's directory — a turn never touches two pieces:
+
 | File | Change |
 |---|---|
-| `score/piece.toml` | The music itself |
-| `log/turns/NN-<composer>.md` | A new turn note (see template) |
-| `log/TURNS.md` | One appended row in the ledger |
+| `pieces/<piece>/score/piece.toml` | The music itself |
+| `pieces/<piece>/log/turns/NN-<composer>.md` | A new turn note (see [template](TURN-TEMPLATE.md)) |
+| `pieces/<piece>/log/TURNS.md` | One appended row in the ledger |
 
 If a turn touches anything else — tooling, the brief, the README — that is a
 separate commit, made outside the relay, and it does not consume a turn.
@@ -58,12 +60,13 @@ Before you touch the score, read in this order:
 1. **`brief/BRIEF.md`** — the constraints. These bind both composers. If you
    want to change them, see *Changing the brief* below; you may not simply
    ignore them.
-2. **`score/piece.toml`** — the whole thing, not just the end. You are
+2. **that piece's `score/piece.toml`** — the whole thing, not just the end. You are
    responding to a piece, not a stub.
 3. **The last two turn notes** in `log/turns/`. Especially the **Left open**
    section of the most recent one — that is the previous composer speaking
    directly to you.
-4. **Render it** with `tools/render.sh`, then look at `build/score-001.svg`
+4. **Render it** with `tools/render.sh <piece>`, then look at that piece's
+   `build/score-001.svg`
    and *listen to* `build/piece.wav`. Both reveal things a text diff hides:
    voice crossings, register collisions, two hands wanting the same key, a
    line that reads cleanly in the source and is unplayable on a staff.
@@ -121,7 +124,8 @@ Do not keep trading reverts.
 
 ## Leaving the score valid
 
-**Every turn must leave `tools/check.sh` passing.** No exceptions, including
+**Every turn must leave `tools/check.sh` passing** — for both pieces, not just
+the one you touched. No exceptions, including
 mid-piece and including turns that are mostly deletion.
 
 ```bash
@@ -193,8 +197,8 @@ limitation in a way that makes the source lie about the music.
 
 ## Turn notes
 
-Copy `log/turns/TEMPLATE.md` to `log/turns/NN-<composer>.md`, where `NN` is
-the zero-padded turn number and `<composer>` is `astra` or `fable`.
+Copy `TURN-TEMPLATE.md` to `pieces/<piece>/log/turns/NN-<composer>.md`, where
+`NN` is the zero-padded turn number and `<composer>` is `astra` or `fable`.
 
 The note is not ceremony. It is the only channel the two composers have for
 talking to each other about intent, and **Left open** is the most important
@@ -209,8 +213,9 @@ want to hear what you do instead of the tonic" is a real handoff.
 
 ## The ledger
 
-`log/TURNS.md` holds one row per turn and is the authority on **whose turn it
-is**. If the last row is yours, it is not your turn; stop and say so.
+Each piece's `log/TURNS.md` holds one row per turn and is the authority on
+**whose turn it is in that piece**. If the last row is yours, it is not your
+turn there; stop and say so — it may still be your turn in the other piece.
 
 ---
 
@@ -219,28 +224,32 @@ is**. If the last row is yours, it is not your turn; stop and say so.
 One commit per turn, message formatted:
 
 ```
-turn 07 (fable): reharmonize the B section over a pedal D
+astra-first turn 07 (fable): reharmonize the B section over a pedal D
 ```
 
 - lowercase, imperative or descriptive, one line
-- always name the turn number and the composer
+- always name the piece, the turn number, and the composer
 - the body is optional; the turn note carries the reasoning
 
 ---
 
 ## Changing the brief
 
-`brief/BRIEF.md` binds both composers. Either composer may **propose** a
-change to it — a new section, a different ending, dropping a constraint that
-turned out to be wrong — but a proposal is written in a turn note under
-**Brief proposal**, not applied unilaterally.
+`brief/BRIEF.md` binds both composers **and both pieces**. That second part
+matters: it is the control variable. If it changes halfway through, the two
+pieces are no longer answering the same question, and the comparison between
+them is worth much less.
 
-The other composer responds in their next turn note, accepting or declining.
-If accepted, the *accepting* composer edits `brief/BRIEF.md` in a separate
-commit outside the relay, quoting both turn notes in the commit message.
+So **composers do not change the brief.** Either composer may still *propose*
+a change, in a turn note under **Brief proposal**, and should when a
+constraint turns out to be genuinely wrong. But a proposal is a flag for a
+human, not something the other composer can accept on its own — because
+accepting it would silently rewrite the terms of a piece that is already
+partly written, and of a second piece besides.
 
-The reason for the friction: the brief is the only thing keeping two
-independent composers writing the same piece.
+If a constraint is blocking you, say so in the turn note and compose within it
+anyway. A human decides whether to change the brief, and if they do, they say
+so explicitly in both ledgers.
 
 ---
 

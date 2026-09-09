@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """Build every artifact from the note source.
 
-    score/piece.toml  ->  build/piece.musicxml   notation, canonical
-                          build/piece.mid        sequencer / DAW
-                          build/score-NNN.svg    engraved pages
-                          build/performance.json input to render_audio.swift
-                          build/piece.pdf        if cairosvg is installed
+    pieces/<piece>/score/piece.toml
+        ->  pieces/<piece>/build/piece.musicxml   notation, canonical
+                                 piece.mid        sequencer / DAW
+                                 score-NNN.svg    engraved pages
+                                 performance.json input to render_audio.swift
 
-The note source is the ONLY place music lives. Everything under build/ is
-derived and disposable. Composers edit the note source; they should never need
-to edit this file in order to write music.
+The note source is the ONLY place music lives. Everything under a piece's
+build/ is derived and disposable. Composers edit the note source; they should
+never need to edit this file in order to write music.
 
-Usage: tools/build.py
+Usage: tools/build.py <piece>
 """
 from __future__ import annotations
 
@@ -23,8 +23,27 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "score" / "piece.toml"
-BUILD = ROOT / "build"
+PIECES = ROOT / "pieces"
+
+# Set by main() once the piece is known; every piece is built in isolation.
+SOURCE = Path()
+BUILD = Path()
+
+
+def pieces() -> list[str]:
+    return sorted(d.name for d in PIECES.iterdir()
+                  if d.is_dir() and (d / "score" / "piece.toml").exists())
+
+
+def select(name: str) -> None:
+    """Point the module at one piece."""
+    global SOURCE, BUILD
+    available = pieces()
+    if name not in available:
+        raise SystemExit(f"No piece named {name!r}. Available: "
+                         f"{', '.join(available) or '(none)'}")
+    SOURCE = PIECES / name / "score" / "piece.toml"
+    BUILD = PIECES / name / "build"
 
 # MusicXML divisions per quarter note. 24 divides cleanly by 2 and 3, so both
 # duplet and triplet subdivisions land on integers.
@@ -589,6 +608,11 @@ def engrave(musicxml: str) -> int:
 
 
 def main() -> int:
+    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    if len(args) != 1:
+        raise SystemExit(f"Usage: tools/build.py <piece>\n"
+                         f"Pieces: {', '.join(pieces()) or '(none)'}")
+    select(args[0])
     try:
         doc = load_source()
         parts = build_parts(doc)
@@ -613,12 +637,13 @@ def main() -> int:
         return 1
 
     notes = sum(1 for e in performance["events"] if e["type"] == "on")
-    print(f"Built {n_bars} bars, {len(parts)} part(s), {notes} notes, "
-          f"{performance['duration']:.1f}s")
-    print("  build/piece.musicxml   notation (open in MuseScore, Finale, ...)")
-    print("  build/piece.mid        MIDI")
-    print(f"  build/score-*.svg      engraved score, {pages} page(s)")
-    print("  build/performance.json input to tools/render_audio.swift")
+    where = BUILD.relative_to(ROOT)
+    print(f"[{SOURCE.parent.parent.name}] {n_bars} bars, {len(parts)} part(s), "
+          f"{notes} notes, {performance['duration']:.1f}s")
+    print(f"  {where}/piece.musicxml   notation (MuseScore, Finale, ...)")
+    print(f"  {where}/piece.mid        MIDI")
+    print(f"  {where}/score-*.svg      engraved score, {pages} page(s)")
+    print(f"  {where}/performance.json input to tools/render_audio.swift")
     return 0
 
 

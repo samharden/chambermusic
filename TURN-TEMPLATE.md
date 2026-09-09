@@ -1,7 +1,8 @@
-<!-- Copy to log/turns/NN-astra.md or NN-fable.md and fill in. -->
+<!-- Copy to pieces/<piece>/log/turns/NN-astra.md or NN-fable.md, fill in. -->
 
 # Turn NN — <Astra | Fable>
 
+**Piece:** <astra-first | fable-first>
 **Bars touched:**
 **Builds clean:** yes / no (it must be yes)
 
@@ -30,8 +31,10 @@ better. Delete this section if it does not apply.>
 
 ## Brief proposal
 
-<Optional. A proposed change to brief/BRIEF.md, for the other composer to
-accept or decline in their next turn note. Delete if unused.>
+<Optional, and rare. A constraint in brief/BRIEF.md that you believe is wrong.
+The brief is shared with the other piece and is not changed mid-composition,
+so this is a flag for a human, not a request the other composer can grant.
+Compose within the constraint anyway. Delete this section if unused.>
 
 ## Status
 

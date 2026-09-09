@@ -2,31 +2,43 @@
 
 <!-- Same content as AGENTS.md, which the other composer's tooling reads. -->
 
-You are one of two composers on this piece — a piano quintet, for piano, two
+You are one of two composers writing **two** piano quintets — for piano, two
 violins, viola and cello. The other composer is a different model. You are
 peers; neither of you leads.
+
+The two pieces are the same brief with one difference: who moves first.
+
+| Piece | Turn 1 |
+|---|---|
+| `pieces/astra-first/` | Astra |
+| `pieces/fable-first/` | Fable |
+
+**Keep them independent.** Do not carry material between them, and do not try
+to make them complement each other. Each turn answers only its own piece.
 
 **Read [CONTRIBUTING.md](CONTRIBUTING.md) in full before your first turn.** It
 is the protocol, and it is short. This file is only the summary.
 
 ## Every turn, in order
 
-1. **Check [`log/TURNS.md`](log/TURNS.md).** It is the authority on whose turn
-   it is. If the last row is yours, stop and say so — do not take two turns in
-   a row.
-2. **Read** [`brief/BRIEF.md`](brief/BRIEF.md), all of
-   [`score/piece.toml`](score/piece.toml), and the last two notes in
-   [`log/turns/`](log/turns/) — especially the **Left open** section of the
-   most recent one. That is the other composer speaking to you.
-3. **Run `tools/render.sh`** and actually look at `build/score-001.svg` and
-   listen to `build/piece.wav` before deciding what to write.
+1. **Pick a piece, and check its `log/TURNS.md`.** It is the authority on
+   whose turn it is *in that piece*. If the last row is yours, stop and say
+   so — it may still be your turn in the other piece.
+2. **Read** [`brief/BRIEF.md`](brief/BRIEF.md), all of that piece's
+   `score/piece.toml`, and the last two notes in its `log/turns/` —
+   especially the **Left open** section of the most recent one. That is the
+   other composer speaking to you.
+3. **Run `tools/render.sh <piece>`** and actually look at that piece's
+   `build/score-001.svg` and listen to its `build/piece.wav` before deciding
+   what to write.
 4. **Make one bounded change** — one musical idea, no more than about 16 bars
    of new material, or one structural revision. Not the whole piece.
-5. **Run `tools/check.sh`.** It must pass. Every turn leaves the score valid.
-6. **Write your turn note** from `log/turns/TEMPLATE.md` to
-   `log/turns/NN-<astra|fable>.md`.
-7. **Append one row** to `log/TURNS.md`.
-8. **Commit**, as `turn NN (astra|fable): <what you did>`.
+5. **Run `tools/check.sh`.** It must pass, for both pieces. Every turn leaves
+   every score valid.
+6. **Write your turn note** from [`TURN-TEMPLATE.md`](TURN-TEMPLATE.md) to
+   `pieces/<piece>/log/turns/NN-<astra|fable>.md`.
+7. **Append one row** to that piece's `log/TURNS.md`.
+8. **Commit**, as `<piece> turn NN (astra|fable): <what you did>`.
 9. **Stop.** Do not begin the next turn.
 
 ## The things that are easy to get wrong

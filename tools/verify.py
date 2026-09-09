@@ -7,7 +7,7 @@ evidence; one reading agreeing with itself is not. If build.py ever drops a
 tie, misplaces a voice, or writes a chord to the wrong staff, the comparison
 here is what catches it.
 
-Usage: tools/verify.py [--no-audio]
+Usage: tools/verify.py <piece> [--no-audio]
 """
 from __future__ import annotations
 
@@ -19,7 +19,8 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-BUILD = ROOT / "build"
+BUILD = Path()      # set by main(), once the piece is known
+SOURCE = Path()
 STEP_SEMITONES = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
 problems: list[str] = []
@@ -157,6 +158,12 @@ def check_audio(path: Path, midi_seconds: float, release: float,
 
 
 def main() -> int:
+    global BUILD, SOURCE
+    args = [a for a in sys.argv[1:] if not a.startswith("-")]
+    if len(args) != 1:
+        raise SystemExit("Usage: tools/verify.py <piece> [--no-audio]")
+    BUILD = ROOT / "pieces" / args[0] / "build"
+    SOURCE = ROOT / "pieces" / args[0] / "score" / "piece.toml"
     with_audio = "--no-audio" not in sys.argv
     musicxml, midi_path = BUILD / "piece.musicxml", BUILD / "piece.mid"
     for path in (musicxml, midi_path):
@@ -184,6 +191,7 @@ def main() -> int:
 
     report = {
         "result": "failed" if problems else "passed",
+        "piece": BUILD.parent.name,
         "bars": bars,
         "note_events": len(score_events),
         "notation_matches_midi": not problems or "disagree" not in " ".join(problems),
@@ -193,11 +201,10 @@ def main() -> int:
     wav = BUILD / "piece.wav"
     if with_audio:
         if wav.exists():
-            source = ROOT / "score" / "piece.toml"
             release = 4.0
             try:
                 import tomllib
-                with source.open("rb") as fh:
+                with SOURCE.open("rb") as fh:
                     release = float(tomllib.load(fh).get("settings", {})
                                     .get("release_seconds", 4.0))
             except Exception:
