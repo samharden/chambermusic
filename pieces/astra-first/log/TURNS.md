@@ -16,5 +16,6 @@ Append one row per turn. Do not edit rows that are already here.
 | # | Composer | Bars touched | What it did | Status |
 |---|---|---|---|---|
 | 0 | — | — | Scaffolding. Placeholder bar of rest in every part. | ok |
+| 1 | Astra | 1–12 | Pass a viola semitone gesture through the ensemble; piano contests it; leave Ab over G unresolved. | ok |
 
-**Next turn: 1 — Astra.**
+**Next turn: 2 — Fable.**

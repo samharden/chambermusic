@@ -43,22 +43,15 @@ beat = "quarter"    # or "dotted-quarter" for compound meters
 bar = 1
 mark = "mf"         # ppp pp p mp mf f ff fff
 
-# Optional expression marks printed above the score, keyed by bar number:
-# [marks]
-# 1 = "Allegro, but never driven"
-# 33 = "poco rit."
+[marks]
+1 = "A - Con moto; viola forward, each entry an answer"
+4 = "Piano: lightly insistent, without pedal"
+9 = "Cello takes the question; others yield"
+12 = "Keep the pulse; no cadence"
 
-# =============================================================================
-#  turn 0: scaffolding seed.
-#
-#  One bar of rest in every part, so the build is green before any music
-#  exists. The first composer to take a turn should REPLACE these bars. They
-#  are a placeholder, not material, and carry no intent to respond to.
-#
-#  `range` is the instrument's real range, and the build REFUSES anything
-#  outside it — a violin has no note below its open G. It is a floor, not a
-#  target: see brief/BRIEF.md for where each instrument actually sounds good.
-# =============================================================================
+# Turn 01: one twelve-bar opening gesture, passed between players.
+# C-G-Ab-G is challenged by the piano's A-natural; bar 12 leaves Ab over G.
+# Each numbered line below is one bar. Strings remain single-note lines.
 
 [[part]]
 id = "vn1"
@@ -66,11 +59,43 @@ name = "Violin I"
 program = 40
 staves = 1
 range = ["G3", "E7"]
+[[part.dynamic]]
+bar = 1
+mark = "mp"
+[[part.dynamic]]
+bar = 5
+mark = "mf"
+[[part.dynamic]]
+bar = 7
+mark = "mp"
+[[part.dynamic]]
+bar = 9
+mark = "p"
+[[part.dynamic]]
+bar = 11
+mark = "mf"
+[[part.dynamic]]
+bar = 12
+mark = "mp"
+
 [[part.voice]]
 id = "vn1"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  "r:8",  # 1
+  "r:8",  # 2
+  "r:8",  # 3
+  "r:8",  # 4
+  "C5:3 G5:1 Ab5:2 G5:2",  # 5
+  "F5:2 Eb5:1 D5:1 C5:2 r:2",  # 6
+  "r:4 D5:2 F5:2",  # 7
+  "E5:4 r:4",  # 8
+  "r:8",  # 9
+  "r:4 Eb5:2 D5:2",  # 10
+  "B4:2 r:2 F5:2 D5:2",  # 11
+  "r:4 Ab4:4",  # 12
+]
 
 [[part]]
 id = "vn2"
@@ -78,11 +103,43 @@ name = "Violin II"
 program = 40
 staves = 1
 range = ["G3", "E7"]
+[[part.dynamic]]
+bar = 1
+mark = "p"
+[[part.dynamic]]
+bar = 3
+mark = "mp"
+[[part.dynamic]]
+bar = 5
+mark = "p"
+[[part.dynamic]]
+bar = 6
+mark = "mf"
+[[part.dynamic]]
+bar = 7
+mark = "mp"
+[[part.dynamic]]
+bar = 9
+mark = "p"
+
 [[part.voice]]
 id = "vn2"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  "r:8",  # 1
+  "r:6 G4:2",  # 2
+  "G4:3 D4:1 Db4:2 D4:2",  # 3
+  "r:8",  # 4
+  "r:4 Eb4:2 G4:2",  # 5
+  "Ab4:3 Eb5:1 F5:2 Eb5:2",  # 6
+  "D5:2 C5:2 B4:2 r:2",  # 7
+  "r:4 C5:2 B4:2",  # 8
+  "r:8",  # 9
+  "G4:2 F4:2 r:4",  # 10
+  "r:8",  # 11
+  "r:8",  # 12
+]
 
 [[part]]
 id = "va"
@@ -90,11 +147,43 @@ name = "Viola"
 program = 41
 staves = 1
 range = ["C3", "E6"]
+[[part.dynamic]]
+bar = 1
+mark = "mf"
+[[part.dynamic]]
+bar = 3
+mark = "p"
+[[part.dynamic]]
+bar = 6
+mark = "mp"
+[[part.dynamic]]
+bar = 9
+mark = "p"
+[[part.dynamic]]
+bar = 11
+mark = "mp"
+[[part.dynamic]]
+bar = 12
+mark = "p"
+
 [[part.voice]]
 id = "va"
 staff = 1
 clef = "alto"
-bars = ["r:8"]
+bars = [
+  "C4:3 G4:1 Ab4:2 G4:2",  # 1
+  "F4:2 Eb4:1 D4:1 C4:2 r:2",  # 2
+  "r:4 G3:2 C4:2",  # 3
+  "Eb4:4 r:4",  # 4
+  "r:8",  # 5
+  "r:2 C4:2 Bb3:2 Ab3:2",  # 6
+  "G3:2 r:2 D4:2 F4:2",  # 7
+  "E4:2 r:6",  # 8
+  "r:8",  # 9
+  "r:4 Ab3:2 G3:2",  # 10
+  "F4:2 Eb4:2 D4:2 r:2",  # 11
+  "r:2 D4:2 r:4",  # 12
+]
 
 [[part]]
 id = "vc"
@@ -102,15 +191,43 @@ name = "Cello"
 program = 42
 staves = 1
 range = ["C2", "A5"]
-# A part can carry its own dynamic line, independent of the ensemble:
-# [[part.dynamic]]
-# bar = 1
-# mark = "mp"
+[[part.dynamic]]
+bar = 1
+mark = "p"
+[[part.dynamic]]
+bar = 3
+mark = "mp"
+[[part.dynamic]]
+bar = 4
+mark = "p"
+[[part.dynamic]]
+bar = 9
+mark = "mf"
+[[part.dynamic]]
+bar = 11
+mark = "mp"
+[[part.dynamic]]
+bar = 12
+mark = "p"
+
 [[part.voice]]
 id = "vc"
 staff = 1
 clef = "bass"
-bars = ["r:8"]
+bars = [
+  "r:8",  # 1
+  "C3:4 r:4",  # 2
+  "Ab2:3 Eb3:1 F3:2 Eb3:2",  # 3
+  "r:4 C3:2 G2:2",  # 4
+  "C3:2 r:2 Eb3:2 D3:2",  # 5
+  "Ab2:4 r:2 F3:2",  # 6
+  "G2:4 r:4",  # 7
+  "C3:2 r:2 G2:2 r:2",  # 8
+  "C3:3 G3:1 Ab3:2 G3:2",  # 9
+  "F3:2 Eb3:1 D3:1 C3:2 r:2",  # 10
+  "G2:2 D3:2 r:4",  # 11
+  "G2:6 r:2",  # 12
+]
 
 [[part]]
 id = "pf"
@@ -118,13 +235,64 @@ name = "Piano"
 program = 0
 staves = 2
 range = ["A0", "C8"]
+[[part.dynamic]]
+bar = 1
+mark = "pp"
+[[part.dynamic]]
+bar = 4
+mark = "mp"
+[[part.dynamic]]
+bar = 5
+mark = "pp"
+[[part.dynamic]]
+bar = 7
+mark = "p"
+[[part.dynamic]]
+bar = 8
+mark = "mp"
+[[part.dynamic]]
+bar = 9
+mark = "pp"
+[[part.dynamic]]
+bar = 11
+mark = "mf"
+[[part.dynamic]]
+bar = 12
+mark = "p"
+
 [[part.voice]]
 id = "rh"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  "r:8",  # 1
+  "r:4 G4,C5:2 r:2",  # 2
+  "r:8",  # 3
+  "C5:3 G5:1 A5:2 G5:2",  # 4
+  "r:8",  # 5
+  "r:6 C5,Eb5:2",  # 6
+  "r:2 B3,F4:2 r:4",  # 7
+  "G4:1 A4:1 G4:2 E4,G4:2 r:2",  # 8
+  "r:8",  # 9
+  "r:2 G4,C5:2 r:4",  # 10
+  "D5:3 A5:1 Bb5:2 A5:2",  # 11
+  "B3,F4:6 r:2",  # 12
+]
 [[part.voice]]
 id = "lh"
 staff = 2
 clef = "bass"
-bars = ["r:8"]
+bars = [
+  "r:8",  # 1
+  "r:4 C3,G3:2 r:2",  # 2
+  "r:8",  # 3
+  "C3,G3:2 r:2 E3:2 r:2",  # 4
+  "r:8",  # 5
+  "r:6 Ab2,Eb3:2",  # 6
+  "r:2 G2,D3:2 r:4",  # 7
+  "C3,G3:2 r:6",  # 8
+  "r:8",  # 9
+  "r:2 Eb3:2 r:4",  # 10
+  "r:4 G2,D3:2 r:2",  # 11
+  "r:8",  # 12
+]
