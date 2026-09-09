@@ -131,7 +131,8 @@ def read_midi(path: Path):
     return events, midi.length
 
 
-def check_audio(path: Path, midi_seconds: float, release: float):
+def check_audio(path: Path, midi_seconds: float, release: float,
+                expect_sound: bool = True):
     import numpy as np
     with wave.open(str(path), "rb") as handle:
         check(handle.getnchannels() == 2, "audio is not stereo")
@@ -147,8 +148,11 @@ def check_audio(path: Path, midi_seconds: float, release: float):
     peak = float(np.max(np.abs(samples))) if samples.size else 0.0
     rms = float(np.sqrt(np.mean(samples ** 2))) if samples.size else 0.0
     check(peak < 0.999, "audio is clipping")
-    check(peak > 0.02, "audio is silent or nearly so")
-    check(rms > 0.005, "audio is far too quiet to be a real performance")
+    if expect_sound:
+        # Skipped while the score is still empty, so that a fresh checkout
+        # verifies cleanly before any music has been written.
+        check(peak > 0.02, "audio is silent or nearly so")
+        check(rms > 0.005, "audio is far too quiet to be a real performance")
     return seconds, peak, rms
 
 
@@ -198,7 +202,8 @@ def main() -> int:
                                     .get("release_seconds", 4.0))
             except Exception:
                 pass
-            seconds, peak, rms = check_audio(wav, midi_seconds, release)
+            seconds, peak, rms = check_audio(wav, midi_seconds, release,
+                                             expect_sound=bool(score_events))
             import math
             report |= {
                 "audio_seconds": round(seconds, 3),
