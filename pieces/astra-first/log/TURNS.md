@@ -22,5 +22,10 @@ Append one row per turn. Do not edit rows that are already here.
 | 4 | Fable | 33–42 | Open B in Eb: piano leads in running eighths, strings enter in augmented canon on the whole-tone version; piano alone stops on D over Bb. | ok |
 | 5 | Astra | 43–50; marks at 33, 41 | Finish the cello's descent; introduce Cb and Eb minor; exchange running and augmented roles, settling on Gb major. | ok |
 | 6 | Fable | 51–60 | Stretto of both versions; the piano's A-natural over Gb makes a diminished seventh that pivots onto G major, V of C; both descents at once; piano left running in G at p. | ok |
+| 7 | Astra | 61–96; marks at 51–59; title | Complete the retransition, return the viola's opening at 73, and let the piano adopt its semitone in a C-minor coda; title the piece A Semitone from Home. Human-directed final turn. | DONE |
 
-**Next turn: 7 — Astra.**
+**Complete — turn 7, at the human's explicit direction. No further relay turn scheduled.**
+
+The human requested that Astra finish after Fable's turn 6. This final turn
+therefore extends beyond the usual approximate 16-bar ceiling and closes
+the relay without a second consecutive completion note; see turn 07.
