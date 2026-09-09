@@ -56,6 +56,8 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 27 = "Close, restrained: piano yields by semitone"
 30 = "C minor; let the arrival settle"
 32 = "Toward B; no slowing"
+33 = "B - Eb major. Piano leads, flowing, with pedal; strings enter one by one, sustained"
+41 = "Piano alone: the gesture in Eb, its whole tone now diatonic"
 
 # Turn 01: one twelve-bar opening gesture, passed between players.
 # C-G-Ab-G is challenged by the piano's A-natural; bar 12 leaves Ab over G.
@@ -69,6 +71,12 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 # Turn 03: bars 22-32 complete A. Violin I chooses Eb; the piano gives up
 # A-natural in a close-register exchange, then accepts Eb at the cadence.
 # Bar 32 offers Bb7 as a doorway to B, without supplying its resolution.
+#
+# Turn 04: B opens in Eb. The texture inverts: the piano runs in continuous
+# eighths for the first time; the strings enter in canon at two bars with the
+# gesture augmented (6-2-4-4), singing the whole-tone version because in Eb
+# that is the diatonic one. The cello's entry is cut off by the piano, alone
+# and f, stating the gesture in Eb and stopping on D over Bb.
 
 [[part]]
 id = "vn1"
@@ -111,6 +119,10 @@ mark = "mp"
 bar = 31
 mark = "p"
 
+[[part.dynamic]]
+bar = 35
+mark = "mp"
+
 [[part.voice]]
 id = "vn1"
 staff = 1
@@ -148,6 +160,16 @@ bars = [
   "Eb5:6 D5:2",  # 30
   "C5:4 r:4",  # 31
   "r:8",  # 32
+  "r:8",  # 33
+  "r:8",  # 34
+  "Bb4:6 F5:2",  # 35
+  "G5:4 F5:4",  # 36
+  "Eb5:4 D5:2 C5:2",  # 37
+  "Bb4:8",  # 38
+  "r:8",  # 39
+  "r:8",  # 40
+  "r:8",  # 41
+  "r:8",  # 42
 ]
 
 [[part]]
@@ -198,6 +220,13 @@ mark = "p"
 bar = 32
 mark = "mp"
 
+[[part.dynamic]]
+bar = 33
+mark = "p"
+[[part.dynamic]]
+bar = 39
+mark = "mp"
+
 [[part.voice]]
 id = "vn2"
 staff = 1
@@ -235,6 +264,16 @@ bars = [
   "C5:4 r:4",  # 30
   "G4:2 Eb4:2 r:4",  # 31
   "r:2 Ab4:6",  # 32
+  "Ab4:4 G4:4",  # 33
+  "r:8",  # 34
+  "r:8",  # 35
+  "r:8",  # 36
+  "r:8",  # 37
+  "r:8",  # 38
+  "r:4 Bb4:2 C5:2",  # 39
+  "D5:4 Eb5:4",  # 40
+  "r:8",  # 41
+  "r:8",  # 42
 ]
 
 [[part]]
@@ -279,6 +318,10 @@ mark = "mf"
 bar = 30
 mark = "p"
 
+[[part.dynamic]]
+bar = 37
+mark = "mp"
+
 [[part.voice]]
 id = "va"
 staff = 1
@@ -316,6 +359,16 @@ bars = [
   "r:4 Eb4:2 D4:2",  # 30
   "C4:4 r:4",  # 31
   "r:8",  # 32
+  "r:8",  # 33
+  "r:8",  # 34
+  "r:8",  # 35
+  "r:8",  # 36
+  "Eb4:6 Bb4:2",  # 37
+  "C5:4 Bb4:4",  # 38
+  "Ab4:4 G4:2 F4:2",  # 39
+  "Eb4:8",  # 40
+  "r:8",  # 41
+  "r:8",  # 42
 ]
 
 [[part]]
@@ -372,6 +425,10 @@ mark = "mp"
 bar = 31
 mark = "p"
 
+[[part.dynamic]]
+bar = 39
+mark = "mp"
+
 [[part.voice]]
 id = "vc"
 staff = 1
@@ -409,6 +466,16 @@ bars = [
   "C3:4 G2:2 r:2",  # 30
   "C2:4 r:4",  # 31
   "r:8",  # 32
+  "r:8",  # 33
+  "r:8",  # 34
+  "r:8",  # 35
+  "r:8",  # 36
+  "r:8",  # 37
+  "r:8",  # 38
+  "Eb3:6 Bb3:2",  # 39
+  "C4:4 Bb3:4",  # 40
+  "r:8",  # 41
+  "r:8",  # 42
 ]
 
 [[part]]
@@ -471,6 +538,13 @@ mark = "mp"
 bar = 31
 mark = "p"
 
+[[part.dynamic]]
+bar = 33
+mark = "p"
+[[part.dynamic]]
+bar = 41
+mark = "f"
+
 [[part.voice]]
 id = "rh"
 staff = 1
@@ -508,6 +582,16 @@ bars = [
   "Eb4,G4:4 r:4",  # 30
   "r:8",  # 31
   "r:4 D4,F4:4",  # 32
+  "Bb4:1 Eb5:1 G5:1 Bb5:1 C6:1 Bb5:1 G5:1 Eb5:1",  # 33
+  "Ab4:1 C5:1 Eb5:1 Ab5:1 Bb5:1 Ab5:1 Eb5:1 C5:1",  # 34
+  "Bb4:1 Eb5:1 G5:1 Bb5:1 C6:1 Bb5:1 G5:1 Eb5:1",  # 35
+  "G4:1 C5:1 Eb5:1 G5:1 Bb5:1 G5:1 Eb5:1 C5:1",  # 36
+  "F4:1 Bb4:1 D5:1 F5:1 Ab5:1 F5:1 D5:1 Bb4:1",  # 37
+  "Bb4:1 Eb5:1 G5:1 Bb5:1 C6:1 Bb5:1 G5:1 Eb5:1",  # 38
+  "Ab4:1 C5:1 Eb5:1 Ab5:1 Bb5:1 Ab5:1 Eb5:1 C5:1",  # 39
+  "F4:1 Bb4:1 D5:1 F5:1 Ab5:1 F5:1 D5:1 Bb4:1",  # 40
+  "Eb5:3 Bb5:1 C6:2 Bb5:2",  # 41
+  "Ab5:2 G5:2 F5:2 D5:2",  # 42
 ]
 [[part.voice]]
 id = "lh"
@@ -546,4 +630,14 @@ bars = [
   "C2,G2:4 r:4",  # 30
   "r:8",  # 31
   "Bb2:8",  # 32
+  "Eb2:4 Bb2:4",  # 33
+  "Ab2:4 Eb3:4",  # 34
+  "Eb2:4 Bb2:4",  # 35
+  "C3:4 G2:4",  # 36
+  "Bb2:4 F3:4",  # 37
+  "Eb2:4 Bb2:4",  # 38
+  "Ab2:4 Eb3:4",  # 39
+  "Bb2:4 F3:4",  # 40
+  "Eb3:3 Bb3:1 C4:2 Bb3:2",  # 41
+  "Ab3:2 G3:2 F3:2 Bb2:2",  # 42
 ]
