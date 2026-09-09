@@ -362,6 +362,12 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
         fail(f"settings.key {key!r} is not a key I can notate. "
              f"Known: {', '.join(sorted(KEY_FIFTHS))}")
     use_sharps = key in SHARP_KEYS
+    # MusicXML pitch/alter determines sound, but Verovio needs an explicit
+    # accidental element to print the symbol. Track cancellations per staff
+    # and octave, resetting to the key signature at every bar line.
+    fifths = KEY_FIFTHS[key]
+    key_alters = dict.fromkeys("FCGDAEB"[:fifths] if fifths > 0
+                              else "BEADGCF"[:-fifths], 1 if fifths > 0 else -1)
     words = {int(k): v for k, v in (doc.get("marks") or {}).items()}
     n_bars = len(parts[0]["voices"][0]["bars"])
     bar_divs = d["units_per_bar"] * d["per_unit"]
@@ -394,6 +400,7 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
     for i, part in enumerate(parts, start=1):
         out.append(f'  <part id="P{i}">')
         for bar in range(1, n_bars + 1):
+            accidentals = {}
             out.append(f'    <measure number="{bar}">')
             if bar == 1:
                 out += ['      <attributes>',
@@ -451,6 +458,15 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                         continue
                     for n, pitch in enumerate(event["pitches"]):
                         step, alter, octave = spell(pitch, use_sharps)
+                        accidental_key = (voice["staff"], step, octave)
+                        previous_alter = accidentals.get(
+                            accidental_key, key_alters.get(step, 0))
+                        printed_accidental = []
+                        if alter != previous_alter:
+                            symbol = {-1: "flat", 0: "natural", 1: "sharp"}[alter]
+                            printed_accidental = [
+                                f'        <accidental>{symbol}</accidental>']
+                        accidentals[accidental_key] = alter
                         stops = pitch in pending
                         ties = []
                         if stops:
@@ -476,6 +492,7 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                                 f'        <voice>{v_index + 1}</voice>',
                                 f'        <type>{type_name}</type>',
                                 *['        <dot/>'] * dots,
+                                *printed_accidental,
                                 f'        <staff>{voice["staff"]}</staff>']
                         if notations:
                             out.append('        <notations>'
