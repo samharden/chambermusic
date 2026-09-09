@@ -56,8 +56,12 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 27 = "Close, restrained: piano yields by semitone"
 30 = "C minor; let the arrival settle"
 32 = "Toward B; no slowing"
-33 = "B - Eb major. Piano leads, flowing, with pedal; strings enter one by one, sustained"
-41 = "Piano alone: the gesture in Eb, its whole tone now diatonic"
+33 = "B - Eb; flowing, with pedal"
+41 = "Piano solo; no pedal"
+43 = "Cello: finish the line"
+45 = "Viola leads; darker"
+47 = "Violin II takes the motion"
+49 = "Piano: broaden, no pedal"
 
 # Turn 01: one twelve-bar opening gesture, passed between players.
 # C-G-Ab-G is challenged by the piano's A-natural; bar 12 leaves Ab over G.
@@ -77,6 +81,11 @@ mark = "mf"         # ppp pp p mp mf f ff fff
 # gesture augmented (6-2-4-4), singing the whole-tone version because in Eb
 # that is the diatonic one. The cello's entry is cut off by the piano, alone
 # and f, stating the gesture in Eb and stopping on D over Bb.
+
+# Turn 05: bars 43-50 finish the interrupted cello line, introduce the
+# flattened sixth, and transfer the running figure to Violin II in Eb minor.
+# The piano takes the augmented semitone gesture and settles on Gb major.
+# B in the new bars sounds as Cb: the current engraver respells Cb as B.
 
 [[part]]
 id = "vn1"
@@ -122,6 +131,16 @@ mark = "p"
 [[part.dynamic]]
 bar = 35
 mark = "mp"
+
+[[part.dynamic]]
+bar = 43
+mark = "p"
+[[part.dynamic]]
+bar = 47
+mark = "mp"
+[[part.dynamic]]
+bar = 49
+mark = "p"
 
 [[part.voice]]
 id = "vn1"
@@ -170,6 +189,14 @@ bars = [
   "r:8",  # 40
   "r:8",  # 41
   "r:8",  # 42
+  "r:8",  # 43
+  "r:8",  # 44
+  "r:8",  # 45
+  "r:8",  # 46
+  "r:4 Gb5:4",  # 47
+  "F5:2 Eb5:2 Db5:2 r:2",  # 48
+  "r:8",  # 49
+  "r:8",  # 50
 ]
 
 [[part]]
@@ -227,6 +254,19 @@ mark = "p"
 bar = 39
 mark = "mp"
 
+[[part.dynamic]]
+bar = 43
+mark = "p"
+[[part.dynamic]]
+bar = 46
+mark = "mp"
+[[part.dynamic]]
+bar = 47
+mark = "mf"
+[[part.dynamic]]
+bar = 49
+mark = "p"
+
 [[part.voice]]
 id = "vn2"
 staff = 1
@@ -274,6 +314,14 @@ bars = [
   "D5:4 Eb5:4",  # 40
   "r:8",  # 41
   "r:8",  # 42
+  "r:6 D4:2",  # 43
+  "Eb4:4 r:4",  # 44
+  "r:8",  # 45
+  "r:4 Db5:2 B4:2",  # 46
+  "Bb3:1 Eb4:1 Gb4:1 Bb4:1 B4:1 Bb4:1 Gb4:1 Eb4:1",  # 47
+  "Ab3:1 B3:1 Eb4:1 Ab4:1 Bb4:1 Ab4:1 Eb4:1 B3:1",  # 48
+  "r:8",  # 49
+  "r:4 Db5:4",  # 50
 ]
 
 [[part]]
@@ -322,6 +370,22 @@ mark = "p"
 bar = 37
 mark = "mp"
 
+[[part.dynamic]]
+bar = 43
+mark = "p"
+[[part.dynamic]]
+bar = 44
+mark = "mp"
+[[part.dynamic]]
+bar = 45
+mark = "mf"
+[[part.dynamic]]
+bar = 47
+mark = "p"
+[[part.dynamic]]
+bar = 50
+mark = "pp"
+
 [[part.voice]]
 id = "va"
 staff = 1
@@ -369,6 +433,14 @@ bars = [
   "Eb4:8",  # 40
   "r:8",  # 41
   "r:8",  # 42
+  "r:8",  # 43
+  "r:4 Bb3:1 B3:1 Bb3:2",  # 44
+  "Eb4:3 Bb4:1 B4:2 Bb4:2",  # 45
+  "Ab4:2 Gb4:2 F4:2 Eb4:2",  # 46
+  "r:4 B3:2 Bb3:2",  # 47
+  "r:8",  # 48
+  "r:8",  # 49
+  "r:6 Gb3:2",  # 50
 ]
 
 [[part]]
@@ -429,6 +501,19 @@ mark = "p"
 bar = 39
 mark = "mp"
 
+[[part.dynamic]]
+bar = 43
+mark = "mf"
+[[part.dynamic]]
+bar = 45
+mark = "p"
+[[part.dynamic]]
+bar = 46
+mark = "mp"
+[[part.dynamic]]
+bar = 47
+mark = "p"
+
 [[part.voice]]
 id = "vc"
 staff = 1
@@ -476,6 +561,14 @@ bars = [
   "C4:4 Bb3:4",  # 40
   "r:8",  # 41
   "r:8",  # 42
+  "Ab3:4 G3:2 F3:2",  # 43
+  "Eb3:6 r:2",  # 44
+  "r:8",  # 45
+  "r:2 B2:2 Gb3:2 Eb3:2",  # 46
+  "Eb2:4 r:4",  # 47
+  "r:4 B2:2 Bb2:2",  # 48
+  "r:4 Gb3:2 F3:2",  # 49
+  "r:2 Db3:2 r:4",  # 50
 ]
 
 [[part]]
@@ -545,6 +638,16 @@ mark = "p"
 bar = 41
 mark = "f"
 
+[[part.dynamic]]
+bar = 43
+mark = "pp"
+[[part.dynamic]]
+bar = 49
+mark = "mp"
+[[part.dynamic]]
+bar = 50
+mark = "p"
+
 [[part.voice]]
 id = "rh"
 staff = 1
@@ -592,6 +695,14 @@ bars = [
   "F4:1 Bb4:1 D5:1 F5:1 Ab5:1 F5:1 D5:1 Bb4:1",  # 40
   "Eb5:3 Bb5:1 C6:2 Bb5:2",  # 41
   "Ab5:2 G5:2 F5:2 D5:2",  # 42
+  "r:8",  # 43
+  "r:8",  # 44
+  "r:4 Gb4:2 F4:2",  # 45
+  "r:8",  # 46
+  "r:8",  # 47
+  "r:4 Gb4:2 F4:2",  # 48
+  "Eb4:6 Bb4:2",  # 49
+  "B4:4 Bb4:4",  # 50
 ]
 [[part.voice]]
 id = "lh"
@@ -640,4 +751,12 @@ bars = [
   "Bb2:4 F3:4",  # 40
   "Eb3:3 Bb3:1 C4:2 Bb3:2",  # 41
   "Ab3:2 G3:2 F3:2 Bb2:2",  # 42
+  "r:8",  # 43
+  "r:8",  # 44
+  "Eb2:4 Bb2:4",  # 45
+  "r:8",  # 46
+  "r:8",  # 47
+  "Ab2:4 r:4",  # 48
+  "Eb2:4 r:4",  # 49
+  "Gb2,Db3:8",  # 50
 ]

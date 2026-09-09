@@ -20,5 +20,6 @@ Append one row per turn. Do not edit rows that are already here.
 | 2 | Fable | 13–21 | Admit the Ab over F minor; cello sings the opening augmented; piano re-states A-natural against it; stop on a bare C with no third. | ok |
 | 3 | Astra | 22–32; marks at 13, 17 | Give Violin I the minor third; piano yields in a close semitone exchange; close A in C minor and offer Bb7 toward B. | ok |
 | 4 | Fable | 33–42 | Open B in Eb: piano leads in running eighths, strings enter in augmented canon on the whole-tone version; piano alone stops on D over Bb. | ok |
+| 5 | Astra | 43–50; marks at 33, 41 | Finish the cello's descent; introduce Cb and Eb minor; exchange running and augmented roles, settling on Gb major. | ok |
 
-**Next turn: 5 — Astra.**
+**Next turn: 6 — Fable.**
