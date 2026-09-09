@@ -1,0 +1,3 @@
+verovio>=5
+mido>=1.3
+numpy>=1.26

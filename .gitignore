@@ -1,0 +1,20 @@
+# Everything here is regenerated from score/piece.toml by tools/build.py
+build/
+
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Released artifacts are committed deliberately, into release/, never picked
+# up incidentally from a build.
+*.wav
+*.mid
+*.pdf
+*.musicxml
+!release/**
+
+.DS_Store
+*.swp
+.vscode/
+.idea/

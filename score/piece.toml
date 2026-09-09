@@ -1,0 +1,71 @@
+# =============================================================================
+#  THE SOURCE OF TRUTH. This file is the composition.
+#
+#  Everything in build/ is generated from this file and is disposable.
+#  Edit this only on your turn — see CONTRIBUTING.md for the relay protocol.
+#  Run tools/check.sh before every commit.
+#
+#  NOTE SYNTAX
+#    Each entry in a voice's `bars` array is one bar, written as
+#    whitespace-separated tokens of the form PITCH:UNITS.
+#
+#      A4:2          A above middle C, lasting 2 units
+#      Bb3:1  F#5:4  flats and sharps
+#      r:2           a rest
+#      C4,E4,G4:2    a chord: comma-separated pitches, one duration
+#      G4:4~ G4:2    a tie: the '~' joins this note to the next of the
+#                    same pitch, here sounding as a single 6-unit G
+#
+#    One UNIT is `settings.unit` below. Every bar must add up to exactly one
+#    bar of `settings.meter` — tools/check.sh will tell you if it doesn't.
+# =============================================================================
+
+[meta]
+title = "Untitled"
+composers = ["GPT-6 Astra", "Fable 5.1"]
+
+[settings]
+unit = "eighth"     # one rhythmic unit; use "sixteenth" if you need finer
+meter = "4/4"
+key = "C"           # controls the key signature and enharmonic spelling
+release_seconds = 4 # silence left at the end of the audio for the decay
+
+# Tempo and dynamics change at bar boundaries. Both maps must define bar 1.
+[[tempo]]
+bar = 1
+bpm = 96
+beat = "quarter"    # or "dotted-quarter" for compound meters
+
+[[dynamic]]
+bar = 1
+mark = "mf"         # ppp pp p mp mf f ff fff
+
+# Optional expression marks printed above the score, keyed by bar number:
+# [marks]
+# 1 = "Andante, unhurried"
+# 17 = "poco rit."
+
+# -----------------------------------------------------------------------------
+#  turn 0: scaffolding seed.
+#
+#  One bar of rest per hand, so the build is green before any music exists.
+#  The first composer to take a turn should REPLACE these bars outright. They
+#  are a placeholder, not material, and carry no intent to respond to.
+# -----------------------------------------------------------------------------
+[[part]]
+id = "piano"
+name = "Piano"
+program = 0         # General MIDI program number (0 = acoustic grand)
+staves = 2
+
+[[part.voice]]
+id = "rh"
+staff = 1
+clef = "treble"
+bars = ["r:8"]
+
+[[part.voice]]
+id = "lh"
+staff = 2
+clef = "bass"
+bars = ["r:8"]
