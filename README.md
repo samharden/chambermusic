@@ -1,8 +1,10 @@
 # AIMusicComposer
 
-Two AI models composing one piece of music, in the open, one turn at a time.
+Two AI models composing one piece of chamber music — a **piano quintet** —
+in the open, one turn at a time.
 
-**GPT-6 Astra** and **Fable 5.1** take alternating turns on a single score.
+**GPT-6 Astra** and **Fable 5.1** take alternating turns on a single score for
+piano, two violins, viola and cello.
 Each turn is a git commit: some music, and a note explaining what it was
 answering and what it is leaving for the other composer. The commit history is
 the point as much as the piece is — it is a record of two models trying to
@@ -16,7 +18,7 @@ write something together, including the disagreements.
 | `brief/BRIEF.md` | The constraints both composers work within |
 | `log/TURNS.md` | The turn ledger — whose turn it is, and what each turn did |
 | `log/turns/` | One note per turn: intent, reasoning, what was left open |
-| `tools/` | Build, check, render, verify, publish |
+| `tools/` | Build, check, render, verify, self-test, publish |
 | `build/` | Generated output. Disposable, gitignored, never edited by hand. |
 
 ## Quickstart
@@ -37,21 +39,41 @@ That produces, in `build/`:
 While composing, `tools/check.sh` is the fast gate: it builds and confirms the
 notation and MIDI match, without rendering audio.
 
+`tools/selftest.py` checks the audio renderer itself — that every instrument
+is audible and reaches the mix. Run it after touching `tools/render_audio.swift`;
+it exists because a single miswired node once made four of the five players
+silently vanish while every other check still passed.
+
 ## How the music is written
 
 The score is plain text, so a musical change shows up as a musical diff:
 
 ```toml
+[[part]]
+id = "vc"
+name = "Cello"
+program = 42
+range = ["C2", "A5"]        # the build refuses anything outside this
+
+[[part.dynamic]]            # this player's own line, under the ensemble
+bar = 1
+mark = "mp"
+
 [[part.voice]]
-id = "rh"
+id = "vc"
 staff = 1
-clef = "treble"
+clef = "bass"
 bars = [
-  "A4:2 D5:1 C5:2 A4:2",     # pitch:units — one bar per line
-  "F4,A4,C5:4 r:4",          # a chord, then a rest
-  "G4:6~ G4:2",              # a tie: one sounding note of 8 units
+  "A2:2 E3:1 C3:2 A2:2",     # pitch:units — one bar per line
+  "F2,C3:4 r:4",             # a double stop, then a rest
+  "G2:6~ G2:2",              # a tie: one sounding note of 8 units
 ]
 ```
+
+Each of the five parts carries its own dynamics, so balance between the
+players is written into the score rather than assumed, and each declares its
+instrument's range so an unplayable note fails the build instead of reaching a
+rehearsal.
 
 `tools/build.py` turns that into notation, MIDI and a performance, and
 `tools/verify.py` independently re-derives the notes from the generated
@@ -61,9 +83,10 @@ failed check rather than as a quietly wrong recording.
 ## Requirements
 
 - **Python 3.11+** — `verovio` (engraving), `mido` (MIDI), `numpy` (audio checks)
-- **Swift**, for audio only. The renderer uses the sound bank that ships with
-  macOS, so there is no soundfont to install. Without Swift, everything except
-  `piece.wav` still builds.
+- **Swift**, for audio only. The renderer gives each instrument its own
+  sampler from the General MIDI sound bank that ships with macOS, so there is
+  no soundfont to install. Without Swift, everything except `piece.wav` still
+  builds.
 
 ## For the composers
 

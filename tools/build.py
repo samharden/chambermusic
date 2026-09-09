@@ -174,9 +174,34 @@ def build_parts(doc: dict) -> list[dict]:
             bar_counts.add(len(parsed))
             built_voices.append({"id": vid, "staff": staff, "clef": clef,
                                  "bars": parsed})
+
+        # An instrument's range is a hard fact about the instrument, not a
+        # matter of taste: a violin has no note below its open G. Catching this
+        # at build time is far better than discovering it at a rehearsal.
+        span = part.get("range")
+        if span:
+            if len(span) != 2:
+                fail(f"part {pid!r}: 'range' must be two pitches, "
+                     f"low and high, e.g. range = [\"G3\", \"A6\"].")
+            low, high = parse_pitch(span[0]), parse_pitch(span[1])
+            if low > high:
+                fail(f"part {pid!r}: range low note {span[0]!r} is above the "
+                     f"high note {span[1]!r}.")
+            for voice in built_voices:
+                for bar_no, events in enumerate(voice["bars"], start=1):
+                    for event in events:
+                        for pitch in event["pitches"] or ():
+                            if not low <= pitch <= high:
+                                where = "below" if pitch < low else "above"
+                                fail(f"part {pid!r}, voice {voice['id']!r}, "
+                                     f"bar {bar_no}: {event['token']!r} is "
+                                     f"{where} the instrument's range "
+                                     f"({span[0]}-{span[1]}).")
+
         built.append({"id": pid, "name": part.get("name", pid),
                       "program": int(part.get("program", 0)),
-                      "staves": staves, "voices": built_voices})
+                      "staves": staves, "voices": built_voices,
+                      "dynamic": part.get("dynamic")})
 
     if len(bar_counts) > 1:
         fail(f"voices disagree on the length of the piece: found bar counts "
@@ -207,22 +232,40 @@ def tempo_map(doc: dict, n_bars: int) -> list[float]:
     return out
 
 
-def dynamic_map(doc: dict, n_bars: int) -> list[str]:
-    marks = doc.get("dynamic") or [{"bar": 1, "mark": "mf"}]
+def expand_dynamics(marks, n_bars: int, seed: str | None, where: str) -> list[str]:
+    """Turn a sparse list of dynamic marks into one value per bar."""
     table = {}
     for mark in marks:
         bar, name = int(mark.get("bar", 1)), mark["mark"]
         if name not in VELOCITY:
-            fail(f"dynamic at bar {bar}: {name!r} is not one of "
+            fail(f"{where}, dynamic at bar {bar}: {name!r} is not one of "
                  f"{sorted(VELOCITY, key=VELOCITY.get)}.")
         table[bar] = name
-    if 1 not in table:
-        fail("the dynamic map does not say how loud bar 1 is.")
-    out, current = [], table[1]
+    current = table.get(1, seed)
+    if current is None:
+        fail(f"{where}: the dynamic map does not say how loud bar 1 is.")
+    out = []
     for bar in range(1, n_bars + 1):
         current = table.get(bar, current)
         out.append(current)
     return out
+
+
+def dynamic_map(doc: dict, n_bars: int) -> list[str]:
+    return expand_dynamics(doc.get("dynamic") or [{"bar": 1, "mark": "mf"}],
+                           n_bars, None, "the score")
+
+
+def dynamics_per_part(parts, base: list[str], n_bars: int) -> list[list[str]]:
+    """Each part follows the score's dynamics unless it gives its own.
+
+    Chamber music lives on the balance between players, so any part may set
+    its own line independently — a cello can sit under the violins.
+    """
+    return [expand_dynamics(part["dynamic"], n_bars, base[0],
+                            f"part {part['id']!r}")
+            if part["dynamic"] else base
+            for part in parts]
 
 
 def flatten(part: dict, per_unit: int, units_per_bar: int) -> list[dict]:
@@ -292,7 +335,7 @@ def esc(text: str) -> str:
             .replace(">", "&gt;"))
 
 
-def emit_musicxml(doc, parts, tempi, dynamics) -> str:
+def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
     d = doc["_derived"]
     meta = doc.get("meta", {})
     key = doc.get("settings", {}).get("key", "C")
@@ -348,8 +391,9 @@ def emit_musicxml(doc, parts, tempi, dynamics) -> str:
                     out.append(f'        <clef number="{staff}"><sign>{sign}'
                                f'</sign><line>{line}</line></clef>')
                 out.append('      </attributes>')
-            # Tempo and dynamic changes are attached to the first part only,
-            # so the engraved score shows each mark once.
+            # Tempo and expression marks head the score, so they go on the
+            # top part only. Dynamics belong to each player and are printed
+            # under every part that has them.
             if i == 1:
                 if bar == 1 or tempi[bar - 1] != tempi[bar - 2]:
                     out += ['      <direction placement="above">',
@@ -363,11 +407,12 @@ def emit_musicxml(doc, parts, tempi, dynamics) -> str:
                             '        <direction-type><words>'
                             f'{esc(words[bar])}</words></direction-type>',
                             '      </direction>']
-                if bar == 1 or dynamics[bar - 1] != dynamics[bar - 2]:
-                    out += ['      <direction placement="below">',
-                            '        <direction-type><dynamics>'
-                            f'<{dynamics[bar - 1]}/></dynamics></direction-type>',
-                            '      </direction>']
+            dynamics = dyn_by_part[i - 1]
+            if bar == 1 or dynamics[bar - 1] != dynamics[bar - 2]:
+                out += ['      <direction placement="below">',
+                        '        <direction-type><dynamics>'
+                        f'<{dynamics[bar - 1]}/></dynamics></direction-type>',
+                        '      </direction>']
             for v_index, voice in enumerate(part["voices"]):
                 if v_index:
                     out.append(f'      <backup><duration>{bar_divs}'
@@ -433,7 +478,7 @@ def bar_start_seconds(tempi, bar_divs, n_bars) -> list[float]:
     return starts
 
 
-def emit_midi(doc, parts, tempi, dynamics, path: Path) -> None:
+def emit_midi(doc, parts, tempi, dyn_by_part, path: Path) -> None:
     import mido
     d = doc["_derived"]
     bar_divs = d["units_per_bar"] * d["per_unit"]
@@ -457,6 +502,7 @@ def emit_midi(doc, parts, tempi, dynamics, path: Path) -> None:
     midi.tracks.append(conductor)
 
     for channel, part in enumerate(parts):
+        dynamics = dyn_by_part[channel]
         track = mido.MidiTrack()
         track.append(mido.MetaMessage("track_name", name=part["name"], time=0))
         track.append(mido.Message("program_change", channel=channel,
@@ -482,7 +528,7 @@ def emit_midi(doc, parts, tempi, dynamics, path: Path) -> None:
     midi.save(str(path))
 
 
-def emit_performance(doc, parts, tempi, dynamics) -> dict:
+def emit_performance(doc, parts, tempi, dyn_by_part) -> dict:
     """Absolute-time events for tools/render_audio.swift."""
     d = doc["_derived"]
     bar_divs = d["units_per_bar"] * d["per_unit"]
@@ -496,6 +542,7 @@ def emit_performance(doc, parts, tempi, dynamics) -> dict:
 
     events = []
     for channel, part in enumerate(parts):
+        dynamics = dyn_by_part[channel]
         for note in flatten(part, d["per_unit"], d["units_per_bar"]):
             velocity = VELOCITY[dynamics[note["bar"] - 1]]
             on = seconds(note["start"])
@@ -517,7 +564,12 @@ def emit_performance(doc, parts, tempi, dynamics) -> dict:
                        "value": 127 if pedal.get("down", True) else 0})
     events.sort(key=lambda e: (e["time"], e["type"] != "off"))
     tail = float(doc.get("settings", {}).get("release_seconds", 4.0))
-    return {"duration": round(starts[n_bars] + tail, 6), "events": events}
+    # The renderer needs one instrument per channel: a single sampler is
+    # monotimbral, so without this every part would come out as a piano.
+    voices = [{"channel": i, "name": part["name"], "program": part["program"]}
+              for i, part in enumerate(parts)]
+    return {"duration": round(starts[n_bars] + tail, 6),
+            "parts": voices, "events": events}
 
 
 def engrave(musicxml: str) -> int:
@@ -543,16 +595,16 @@ def main() -> int:
         d = doc["_derived"]
         n_bars = len(parts[0]["voices"][0]["bars"])
         tempi = tempo_map(doc, n_bars)
-        dynamics = dynamic_map(doc, n_bars)
+        dyn_by_part = dynamics_per_part(parts, dynamic_map(doc, n_bars), n_bars)
 
         BUILD.mkdir(exist_ok=True)
         for stale in BUILD.glob("score-*.svg"):
             stale.unlink()
 
-        musicxml = emit_musicxml(doc, parts, tempi, dynamics)
+        musicxml = emit_musicxml(doc, parts, tempi, dyn_by_part)
         (BUILD / "piece.musicxml").write_text(musicxml, encoding="utf-8")
-        emit_midi(doc, parts, tempi, dynamics, BUILD / "piece.mid")
-        performance = emit_performance(doc, parts, tempi, dynamics)
+        emit_midi(doc, parts, tempi, dyn_by_part, BUILD / "piece.mid")
+        performance = emit_performance(doc, parts, tempi, dyn_by_part)
         (BUILD / "performance.json").write_text(
             json.dumps(performance, indent=1), encoding="utf-8")
         pages = engrave(musicxml)

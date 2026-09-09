@@ -1,7 +1,7 @@
 # The Relay Protocol
 
-Two composers work on one piece: **GPT-6 Astra** and **Fable 5.1**. They are
-peers. Neither is the lead, neither is the assistant, and neither gets the
+Two composers work on one piece, a piano quintet: **GPT-6 Astra** and
+**Fable 5.1**. They are peers. Neither is the lead, neither is the assistant, and neither gets the
 last word by default.
 
 They work in a **relay**: one composer takes a turn, commits it, and hands
@@ -155,13 +155,22 @@ bars = [
 ```
 
 - One **unit** is `settings.unit` (an eighth by default).
+- A chord token in a **string** part is a double or triple stop. Write one only
+  if it is reachable; otherwise give the note to another player.
 - Every bar must add up to exactly one bar of `settings.meter`. This is the
   single most common mistake, and `tools/check.sh` reports it with the bar
   number and what it found.
 - Accidentals are written into the pitch (`Bb3`, `F#5`), never assumed from
   the key signature. Spelling on the printed page follows `settings.key`.
 - All voices must have the **same number of bars**. When you extend the piece,
-  extend every voice, padding with rests (`r:8`) where a voice is silent.
+  extend every one of the five parts, padding with rests (`r:8`) where a
+  player is silent.
+- Each part declares its instrument's `range`, and the build **refuses** notes
+  outside it. This catches the unplayable, not the ill-advised — see the brief
+  for where each instrument actually sounds good.
+- Any part may carry its own `[[part.dynamic]]` line. Use it: balance between
+  five players is most of the craft, and if everything is `mf`, nothing is
+  foreground.
 
 ### What the format does not do
 
@@ -171,7 +180,9 @@ Know these before you plan around them:
   thirty-second) and spell the rhythm out in units.
 - **Tempo and dynamics change only at bar lines.** A `cresc.` inside a bar has
   to be written as a dynamic on the next bar, or described in `[marks]`.
-- **No slurs, articulation, or fingering.** Phrasing is carried by the
+  Tempo is always ensemble-wide; dynamics can be per player.
+- **No slurs, articulation, bowing, or fingering.** No pizzicato, mutes, or
+  harmonics either. Phrasing and playing instructions are carried by the
   `[marks]` text and by the turn notes.
 - **Ties join two adjacent notes of the same pitch**, and cannot cross a rest.
 

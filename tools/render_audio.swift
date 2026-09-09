@@ -19,8 +19,15 @@ struct Event: Decodable {
     let value: UInt8?
 }
 
+struct PartInfo: Decodable {
+    let channel: Int
+    let name: String
+    let program: UInt8
+}
+
 struct Performance: Decodable {
     let duration: Double
+    let parts: [PartInfo]?
     let events: [Event]
 }
 
@@ -52,25 +59,47 @@ guard performance.duration > 0 else { die("the performance has zero duration.") 
 
 let sampleRate = 44100.0
 let engine = AVAudioEngine()
-let sampler = AVAudioUnitSampler()
 let reverb = AVAudioUnitReverb()
-engine.attach(sampler)
+// The samplers feed a mixer, and the mixer feeds the reverb. A reverb node has
+// only ONE input bus, so wiring the players straight into it would silently
+// keep just the last connection and drop every other instrument.
+let ensemble = AVAudioMixerNode()
 engine.attach(reverb)
+engine.attach(ensemble)
 
 guard let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate,
                                  channels: 2) else {
     die("could not create the output audio format.")
 }
-engine.connect(sampler, to: reverb, format: format)
+engine.connect(ensemble, to: reverb, format: format)
 engine.connect(reverb, to: engine.mainMixerNode, format: format)
 reverb.loadFactoryPreset(.mediumHall)
 reverb.wetDryMix = 12
-sampler.overallGain = 0
+
+// One sampler per part. AVAudioUnitSampler is monotimbral - it holds a single
+// instrument and ignores per-channel program changes - so an ensemble needs
+// one instance per instrument or every part comes out as the same sound.
+let partList = performance.parts ?? [PartInfo(channel: 0, name: "Part 1",
+                                              program: 0)]
+var samplers: [Int: AVAudioUnitSampler] = [:]
+for part in partList {
+    let sampler = AVAudioUnitSampler()
+    engine.attach(sampler)
+    engine.connect(sampler, to: ensemble, format: format)
+    sampler.overallGain = 0
+    do {
+        try sampler.loadSoundBankInstrument(
+            at: soundBank, program: part.program,
+            bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB), bankLSB: 0)
+    } catch {
+        die("could not load General MIDI program \(part.program) for "
+            + "\(part.name): \(error.localizedDescription)")
+    }
+    samplers[part.channel] = sampler
+}
+guard !samplers.isEmpty else { die("the performance declares no parts.") }
 
 do {
-    try sampler.loadSoundBankInstrument(
-        at: soundBank, program: 0,
-        bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB), bankLSB: 0)
     try engine.enableManualRenderingMode(.offline, format: format,
                                          maximumFrameCount: 1024)
     try engine.start()
@@ -115,19 +144,25 @@ while cursor < totalFrames {
     while index < events.count,
           Int64((events[index].time * sampleRate).rounded()) <= cursor {
         let event = events[index]
+        guard let sampler = samplers[Int(event.channel)] else {
+            die("event at \(event.time)s names channel \(event.channel), "
+                + "which no part declares.")
+        }
         switch event.type {
+        // Each part has its own sampler, so within it we always speak on
+        // MIDI channel 0; the part is identified by which sampler we picked.
         case "on":
             if let note = event.note {
                 sampler.startNote(note, withVelocity: event.velocity ?? 64,
-                                  onChannel: event.channel)
+                                  onChannel: 0)
             }
         case "off":
             if let note = event.note {
-                sampler.stopNote(note, onChannel: event.channel)
+                sampler.stopNote(note, onChannel: 0)
             }
         case "pedal":
             sampler.sendController(64, withValue: event.value ?? 0,
-                                   onChannel: event.channel)
+                                   onChannel: 0)
         default:
             die("unknown event type \(event.type.debugDescription) at "
                 + "\(event.time)s.")

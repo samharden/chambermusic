@@ -2,8 +2,9 @@
 
 <!-- Same content as AGENTS.md, which the other composer's tooling reads. -->
 
-You are one of two composers on this piece. The other is a different model.
-You are peers; neither of you leads.
+You are one of two composers on this piece — a piano quintet, for piano, two
+violins, viola and cello. The other composer is a different model. You are
+peers; neither of you leads.
 
 **Read [CONTRIBUTING.md](CONTRIBUTING.md) in full before your first turn.** It
 is the protocol, and it is short. This file is only the summary.
@@ -36,6 +37,11 @@ is the protocol, and it is short. This file is only the summary.
 - **You may revise the other composer's music.** It is a shared piece. If you
   remove more than you add, explain why under **Revision rationale**.
 - **Every bar must add up.** Each bar's units must total exactly one bar of
-  the meter, and every voice must have the same number of bars.
+  the meter, and all five parts must have the same number of bars — pad a
+  silent player with rests.
+- **Write the balance.** Any part can carry its own `[[part.dynamic]]`. If
+  every player is `mf`, nothing is in the foreground.
+- **The strings are four players, not a pad.** Give them entries, counterlines
+  and silences, not four-part sustained chords under the piano.
 - **Never run `tools/publish.sh`**, never `git push`, never rewrite history.
   Publishing is a human decision.
