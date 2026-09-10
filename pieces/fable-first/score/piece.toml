@@ -37,6 +37,11 @@ bar = 1
 bpm = 96
 beat = "quarter"    # or "dotted-quarter" for compound meters
 
+[[tempo]]
+bar = 33
+bpm = 88
+beat = "quarter"
+
 # The ensemble dynamic. Any part may override it with its own [[part.dynamic]]
 # block — balance between the five players is most of the craft here.
 [[dynamic]]
@@ -59,6 +64,18 @@ mark = "mf"
 26 = "the piano takes the viola's line, in harmony; the cello restores the lament"
 30 = "all five on C"
 31 = "the piano alone: the third, at last"
+
+33 = "B: A minor, violin I broadly"
+35 = "violin II enters within the phrase"
+37 = "closer replies; piano lightly"
+40 = "E7: let the bass go"
+
+# Turn 4 (astra), bars 33–40: the descending tail becomes a violin duet.
+# A beneath the preceding C–E opens A minor. Violin I augments the tail
+# F–E–D–C–B; violin II enters before it finishes and bends its ending to A.
+# The replies contract at 37. Piano stays out for four bars, then offers
+# isolated upper notes. Bar 40 suspends F over E7, resolves it to E, and
+# lets the bass disappear; the piano's late B leaves G#–B–D exposed.
 
 # Turn 3 (fable), bars 25–32: close section A.
 # The C7 resolves to F minor, but over the cello's held C, so it is iv6/4 in
@@ -110,6 +127,15 @@ mark = "p"
 [[part.dynamic]]
 bar = 30
 mark = "f"
+[[part.dynamic]]
+bar = 33
+mark = "mp"
+[[part.dynamic]]
+bar = 37
+mark = "mf"
+[[part.dynamic]]
+bar = 40
+mark = "mp"
 [[part.voice]]
 id = "vn1"
 staff = 1
@@ -144,7 +170,18 @@ bars = [
   "r:8",
   "C5:6 r:2",
   "r:8",
-  "r:8",]
+  "r:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "F5:6 E5:2",
+  "D5:4 C5:4",
+  "B4:6 r:2",
+  "r:8",
+  "r:2 C5:2 D5:2 E5:2",
+  "F5:3 E5:1 D5:2 C5:2",
+  "B4:2 C5:2 D5:2 F5:2",
+  "F5:4 E5:2 r:2",
+]
 
 [[part]]
 id = "vn2"
@@ -167,6 +204,15 @@ mark = "p"
 [[part.dynamic]]
 bar = 30
 mark = "f"
+[[part.dynamic]]
+bar = 33
+mark = "p"
+[[part.dynamic]]
+bar = 35
+mark = "mf"
+[[part.dynamic]]
+bar = 38
+mark = "mp"
 [[part.voice]]
 id = "vn2"
 staff = 1
@@ -201,7 +247,18 @@ bars = [
   "r:8",
   "C4:6 r:2",
   "r:8",
-  "r:8",]
+  "r:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "E4:2 r:2 A3:2 r:2",
+  "r:2 F4:2 E4:2 r:2",
+  "r:2 F4:3 E4:1 D4:2",
+  "C4:3 B3:1 A3:2 r:2",
+  "F4:3 E4:1 D4:2 C4:2",
+  "B3:4 r:4",
+  "r:2 A3:2 C4:2 D4:2",
+  "D4:8",
+]
 
 [[part]]
 id = "va"
@@ -227,6 +284,9 @@ mark = "p"
 [[part.dynamic]]
 bar = 30
 mark = "f"
+[[part.dynamic]]
+bar = 33
+mark = "p"
 [[part.voice]]
 id = "va"
 staff = 1
@@ -264,7 +324,18 @@ bars = [
   "r:8",
   "C3:6 r:2",
   "r:8",
-  "r:8",]
+  "r:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "C4:4 r:4",
+  "r:4 A3:2 B3:2",
+  "G#3:2 r:6",
+  "r:2 E3:2 r:4",
+  "r:8",
+  "r:8",
+  "r:4 F3:2 r:2",
+  "G#3:8",
+]
 
 [[part]]
 id = "vc"
@@ -290,6 +361,9 @@ mark = "mf"
 [[part.dynamic]]
 bar = 30
 mark = "f"
+[[part.dynamic]]
+bar = 33
+mark = "p"
 [[part.voice]]
 id = "vc"
 staff = 1
@@ -330,7 +404,18 @@ bars = [
   "D2:4 G2:4",
   "C2:6 r:2",
   "r:8",
-  "r:8",]
+  "r:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "A2:6 r:2",
+  "r:8",
+  "E3:2 r:6",
+  "A2:4 r:4",
+  "D3:4 r:4",
+  "E2:2 r:6",
+  "A2:2 r:2 D3:2 r:2",
+  "E2:2 r:6",
+]
 
 [[part]]
 id = "pf"
@@ -359,6 +444,9 @@ mark = "f"
 [[part.dynamic]]
 bar = 31
 mark = "pp"
+[[part.dynamic]]
+bar = 37
+mark = "p"
 [[part.voice]]
 id = "rh"
 staff = 1
@@ -393,7 +481,18 @@ bars = [
   "G4:4 Ab4:2 B4:2",
   "C4,C5:8~",
   "C4,E4,C5:8~",
-  "C4,E4,C5:8",]
+  "C4,E4,C5:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:1 A5:1 r:3 F5:1 r:2",
+  "r:2 G#5:1 r:1 B5:2 r:2",
+  "r:8",
+  "r:6 B4:2",
+]
 [[part.voice]]
 id = "lh"
 staff = 2
@@ -427,4 +526,15 @@ bars = [
   "F3,Ab3:4 D3,F3:4",
   "C2,C3:8~",
   "C2,C3:8~",
-  "C2,C3:8",]
+  "C2,C3:8",
+
+  # 33–40  B: the descending tail, exchanged between the violins
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:8",
+]
