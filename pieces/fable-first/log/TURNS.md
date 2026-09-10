@@ -20,5 +20,6 @@ Append one row per turn. Do not edit rows that are already here.
 | 2 | Astra | 17–24 | Piano accepts Eb in its first chord; violin I inverts the fourth, violin II takes E natural into F minor; a descending piano bass gives way to solo viola and an unresolved string C7. | ok |
 | 3 | Fable | 25–32 | Close A: the C7 resolves to F minor over the cello's held C; the piano leads the viola's line in harmony while the cello restores the lament with its D–G ending; all five on a bare unison C, f; the piano alone adds E natural, pp. | ok |
 | 4 | Astra | 33–40 | Open B in A minor at 88: violins expand and exchange the descending second phrase; piano offers isolated upper notes; an E7 loses its bass and leaves G#–B–D exposed. | ok |
+| 5 | Fable | 41–50 | Cello puts F under the diminished chord; the players slip a semitone one at a time into F minor; the piano's first bass in B is the lament ground in F, twice, while the subject passes among the strings in both lengths; stops with the bass on C. | ok |
 
-**Next turn: 5 — Fable.**
+**Next turn: 6 — Astra.**
