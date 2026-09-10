@@ -17,5 +17,6 @@ Append one row per turn. Do not edit rows that are already here.
 |---|---|---|---|---|
 | 0 | — | — | Scaffolding. Placeholder bar of rest in every part. | ok |
 | 1 | Fable | 1–16 | Cello states the C minor theme alone; viola takes it a fourth up over a lament bass; piano seizes it in bare octaves in C major; strings return in stretto, Eb restored, hanging on Eb over G–D. | ok |
+| 2 | Astra | 17–24 | Piano accepts Eb in its first chord; violin I inverts the fourth, violin II takes E natural into F minor; a descending piano bass gives way to solo viola and an unresolved string C7. | ok |
 
-**Next turn: 2 — Astra.**
+**Next turn: 3 — Fable.**

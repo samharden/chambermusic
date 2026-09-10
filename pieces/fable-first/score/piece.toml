@@ -51,6 +51,17 @@ mark = "mf"
 5 = "viola takes the line; cello sinks beneath it"
 9 = "the piano, bare octaves, senza pedale"
 13 = "the strings answer in stretto, each entry firm"
+17 = "Ab: the piano yields"
+19 = "violin II takes E natural"
+23 = "viola alone"
+24 = "C7, held open"
+
+# Turn 2 (astra), bars 17–24: exchange the disputed third.
+# The piano accepts Eb in an Ab-major chord. Violin I turns the theme's
+# fourth downward; violin II answers the piano's next minor chord with E
+# natural, briefly leading into F minor. The piano takes a fragment of the
+# lament bass, then withdraws. Viola descends alone to E natural; the strings
+# end on C–E–Bb, with a passing upper D, inviting but withholding F.
 
 # =============================================================================
 #  turn 1 (fable): the theme, and the argument over it.
@@ -74,6 +85,15 @@ name = "Violin I"
 program = 40
 staves = 1
 range = ["G3", "E7"]
+[[part.dynamic]]
+bar = 17
+mark = "mf"
+[[part.dynamic]]
+bar = 21
+mark = "mp"
+[[part.dynamic]]
+bar = 24
+mark = "p"
 [[part.voice]]
 id = "vn1"
 staff = 1
@@ -90,6 +110,15 @@ bars = [
   "r:4 D5:3 G5:1",
   "A5:2 Bb5:2 A5:2 G5:1 F5:1",
   "Eb5:8",
+  # 17–24  inverted fourth; leave the answer to violin II
+  "Eb5:3 Bb4:1 Ab4:2 G4:2",
+  "F4:2 Eb4:1 D4:1 C4:2 r:2",
+  "r:8",
+  "r:8",
+  "r:4 C5:3 F5:1",
+  "Eb5:2 Db5:1 C5:1 Bb4:2 r:2",
+  "r:8",
+  "D5:4 r:4",
 ]
 
 [[part]]
@@ -98,6 +127,15 @@ name = "Violin II"
 program = 40
 staves = 1
 range = ["G3", "E7"]
+[[part.dynamic]]
+bar = 19
+mark = "mf"
+[[part.dynamic]]
+bar = 21
+mark = "p"
+[[part.dynamic]]
+bar = 22
+mark = "mf"
 [[part.voice]]
 id = "vn2"
 staff = 1
@@ -114,6 +152,15 @@ bars = [
   "G4:3 C5:1 D5:2 Eb5:2",
   "D5:2 C5:1 Bb4:1 G4:4",
   "G4:8",
+  # 17–24  the piano releases Eb before this player insists on E
+  "r:8",
+  "r:8",
+  "r:2 G4:1 C5:1 D5:2 E5:2",
+  "F5:2 C5:1 Bb4:1 Ab4:2 r:2",
+  "r:2 Ab4:2 G4:2 F4:2",
+  "r:4 E4:3 F4:1",
+  "r:8",
+  "E4:8",
 ]
 
 [[part]]
@@ -128,6 +175,12 @@ mark = "mp"
 [[part.dynamic]]
 bar = 13
 mark = "mf"
+[[part.dynamic]]
+bar = 20
+mark = "p"
+[[part.dynamic]]
+bar = 23
+mark = "mp"
 [[part.voice]]
 id = "va"
 staff = 1
@@ -147,6 +200,15 @@ bars = [
   "A4:2 Bb4:2 A4:2 G4:1 F4:1",
   "D4:8",
   "D4:8",
+  # 17–24  silence, a low counterline, then the altered descending tail
+  "r:8",
+  "r:8",
+  "r:8",
+  "r:4 C4:3 Db4:1",
+  "C4:2 Bb3:2 Ab3:4",
+  "r:8",
+  "Ab3:3 G3:1 F3:2 E3:2",
+  "Bb3:8",
 ]
 
 [[part]]
@@ -164,6 +226,9 @@ mark = "p"
 [[part.dynamic]]
 bar = 13
 mark = "mf"
+[[part.dynamic]]
+bar = 20
+mark = "p"
 [[part.voice]]
 id = "vc"
 staff = 1
@@ -186,6 +251,15 @@ bars = [
   "D4:2 C4:1 Bb3:1 G3:4",
   "C3:4 Bb2:4",
   "G2:8",
+  # 17–24  yield the bass to the piano; only two structural entries
+  "r:8",
+  "r:8",
+  "r:8",
+  "F3:4 r:4",
+  "r:8",
+  "r:8",
+  "r:8",
+  "C3:8",
 ]
 
 [[part]]
@@ -199,6 +273,12 @@ bar = 9
 mark = "f"
 [[part.dynamic]]
 bar = 13
+mark = "p"
+[[part.dynamic]]
+bar = 17
+mark = "mp"
+[[part.dynamic]]
+bar = 18
 mark = "p"
 [[part.voice]]
 id = "rh"
@@ -216,6 +296,15 @@ bars = [
   # 13   the D held under the strings' re-entry, then out
   "D4:8",
   "r:8", "r:8", "r:8",
+  # 17–24  the first chord accepts Eb; release before the violin replies
+  "C4,Eb4,Ab4:4 r:4",
+  "Bb3,Db4,F4:2 r:6",
+  "Eb4,G4:2 r:6",
+  "r:8",
+  "C4:2 r:6",
+  "F3,Ab3:2 r:2 G3,Bb3:2 r:2",
+  "r:8",
+  "r:8",
 ]
 [[part.voice]]
 id = "lh"
@@ -232,4 +321,13 @@ bars = [
   "D2:8~",
   "D2:8",
   "r:8", "r:8", "r:8",
+  # 17–24  sparse harmonic roots; a fragment of the cello's lament
+  "Ab2,Eb3:4 r:4",
+  "G2:4 r:4",
+  "C3,G3:2 r:6",
+  "r:8",
+  "F2:4 Eb2:4",
+  "Db2:4 C2:4",
+  "r:8",
+  "r:8",
 ]
