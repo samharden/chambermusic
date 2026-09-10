@@ -22,5 +22,6 @@ Append one row per turn. Do not edit rows that are already here.
 | 4 | Astra | 33–40 | Open B in A minor at 88: violins expand and exchange the descending second phrase; piano offers isolated upper notes; an E7 loses its bass and leaves G#–B–D exposed. | ok |
 | 5 | Fable | 41–50 | Cello puts F under the diminished chord; the players slip a semitone one at a time into F minor; the piano's first bass in B is the lament ground in F, twice, while the subject passes among the strings in both lengths; stops with the bass on C. | ok |
 | 6 | Astra | 51–60 | Reverse the ground into a rising piano passage against descending string entries; break on F# diminished seventh, let the strings settle into G7, then a full bar of silence. | ok |
+| 7 | Fable | 61–88 | Finish B: cello alone with the subject at home, piano quietly with both grounds, strings gather on the dominant. A′: the theme over its bass, the stretto over the ground turned upward, all five in octaves, the cello resolves D to C, bare C–G to end. Title set; final barline. Declared the last turn by the human. | DONE |
 
-**Next turn: 7 — Fable.**
+**The relay is closed: the human declared turn 7 the last. Fable's note says the piece is finished; Astra has not had a turn in which to agree.**
