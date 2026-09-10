@@ -41,23 +41,31 @@ beat = "quarter"    # or "dotted-quarter" for compound meters
 # block — balance between the five players is most of the craft here.
 [[dynamic]]
 bar = 1
-mark = "mf"         # ppp pp p mp mf f ff fff
+mark = "p"
+[[dynamic]]
+bar = 13
+mark = "mf"
 
-# Optional expression marks printed above the score, keyed by bar number:
-# [marks]
-# 1 = "Allegro, but never driven"
-# 33 = "poco rit."
+[marks]
+1 = "Poco sostenuto — the cello alone, unhurried"
+5 = "viola takes the line; cello sinks beneath it"
+9 = "the piano, bare octaves, senza pedale"
+13 = "the strings answer in stretto, each entry firm"
 
 # =============================================================================
-#  turn 0: scaffolding seed.
+#  turn 1 (fable): the theme, and the argument over it.
 #
-#  One bar of rest in every part, so the build is green before any music
-#  exists. The first composer to take a turn should REPLACE these bars. They
-#  are a placeholder, not material, and carry no intent to respond to.
-#
-#  `range` is the instrument's real range, and the build REFUSES anything
-#  outside it — a violin has no note below its open G. It is a floor, not a
-#  target: see brief/BRIEF.md for where each instrument actually sounds good.
+#  Bars 1–4    Cello alone, C minor: G–C–D–Eb, falling back to G, then a
+#              second phrase down to D. Ends on the supertonic, open.
+#  Bars 5–8    Viola takes the theme a fourth higher (arriving on G, the
+#              dominant); the cello sinks under it in a slow lament bass
+#              C–Bb–Ab–G–F–Eb–D–G.
+#  Bars 9–12   Every string drops out. The piano seizes the theme in bare
+#              octaves, forte, and plays it in C MAJOR — E and B natural
+#              where the strings had Eb and Bb. It lands on D and holds.
+#  Bars 13–16  The piano dies away on its D while the four strings come back
+#              in stretto (vc, va, vn2, vn1, each a half-bar apart), Eb
+#              restored. Bar 16 hangs on Eb over a bare G–D.
 # =============================================================================
 
 [[part]]
@@ -70,7 +78,19 @@ range = ["G3", "E7"]
 id = "vn1"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  # 1–4  silent
+  "r:8", "r:8", "r:8", "r:8",
+  # 5–8  silent
+  "r:8", "r:8", "r:8", "r:8",
+  # 9–12 silent (piano alone)
+  "r:8", "r:8", "r:8", "r:8",
+  # 13–16 stretto: last entry, on D, half a bar after vn2
+  "r:8",
+  "r:4 D5:3 G5:1",
+  "A5:2 Bb5:2 A5:2 G5:1 F5:1",
+  "Eb5:8",
+]
 
 [[part]]
 id = "vn2"
@@ -82,7 +102,19 @@ range = ["G3", "E7"]
 id = "vn2"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  # 1–4  silent
+  "r:8", "r:8", "r:8", "r:8",
+  # 5–8  silent
+  "r:8", "r:8", "r:8", "r:8",
+  # 9–12 silent (piano alone)
+  "r:8", "r:8", "r:8", "r:8",
+  # 13–16 stretto: third entry, on G, a bar after the cello
+  "r:8",
+  "G4:3 C5:1 D5:2 Eb5:2",
+  "D5:2 C5:1 Bb4:1 G4:4",
+  "G4:8",
+]
 
 [[part]]
 id = "va"
@@ -90,11 +122,32 @@ name = "Viola"
 program = 41
 staves = 1
 range = ["C3", "E6"]
+[[part.dynamic]]
+bar = 5
+mark = "mp"
+[[part.dynamic]]
+bar = 13
+mark = "mf"
 [[part.voice]]
 id = "va"
 staff = 1
 clef = "alto"
-bars = ["r:8"]
+bars = [
+  # 1–4  silent
+  "r:8", "r:8", "r:8", "r:8",
+  # 5–8  the theme a fourth higher, arriving on G
+  "C4:3 F4:1 G4:2 Ab4:2",
+  "G4:2 F4:1 Eb4:1 C4:4",
+  "Db4:3 C4:1 Bb3:2 Ab3:2",
+  "G3:8",
+  # 9–12 silent (piano alone)
+  "r:8", "r:8", "r:8", "r:8",
+  # 13–16 stretto: second entry, on D, half a bar after the cello
+  "r:4 D4:3 G4:1",
+  "A4:2 Bb4:2 A4:2 G4:1 F4:1",
+  "D4:8",
+  "D4:8",
+]
 
 [[part]]
 id = "vc"
@@ -102,15 +155,38 @@ name = "Cello"
 program = 42
 staves = 1
 range = ["C2", "A5"]
-# A part can carry its own dynamic line, independent of the ensemble:
-# [[part.dynamic]]
-# bar = 1
-# mark = "mp"
+[[part.dynamic]]
+bar = 1
+mark = "mp"
+[[part.dynamic]]
+bar = 5
+mark = "p"
+[[part.dynamic]]
+bar = 13
+mark = "mf"
 [[part.voice]]
 id = "vc"
 staff = 1
 clef = "bass"
-bars = ["r:8"]
+bars = [
+  # 1–4  the theme, alone
+  "G3:3 C4:1 D4:2 Eb4:2",
+  "D4:2 C4:1 Bb3:1 G3:4",
+  "Ab3:3 G3:1 F3:2 Eb3:2",
+  "D3:6 r:2",
+  # 5–8  lament bass under the viola
+  "C3:6 Bb2:2",
+  "Ab2:4 G2:4",
+  "F2:4 Eb2:4",
+  "D2:4 G2:4",
+  # 9–12 silent (piano alone)
+  "r:8", "r:8", "r:8", "r:8",
+  # 13–16 stretto: first entry, Eb restored, then down to the bass
+  "G3:3 C4:1 D4:2 Eb4:2",
+  "D4:2 C4:1 Bb3:1 G3:4",
+  "C3:4 Bb2:4",
+  "G2:8",
+]
 
 [[part]]
 id = "pf"
@@ -118,13 +194,42 @@ name = "Piano"
 program = 0
 staves = 2
 range = ["A0", "C8"]
+[[part.dynamic]]
+bar = 9
+mark = "f"
+[[part.dynamic]]
+bar = 13
+mark = "p"
 [[part.voice]]
 id = "rh"
 staff = 1
 clef = "treble"
-bars = ["r:8"]
+bars = [
+  # 1–8  silent
+  "r:8", "r:8", "r:8", "r:8",
+  "r:8", "r:8", "r:8", "r:8",
+  # 9–12 the theme in C major, bare octaves with the left hand
+  "G4:3 C5:1 D5:2 E5:2",
+  "D5:2 C5:1 B4:1 G4:4",
+  "A4:3 G4:1 F4:2 E4:2",
+  "D4:8~",
+  # 13   the D held under the strings' re-entry, then out
+  "D4:8",
+  "r:8", "r:8", "r:8",
+]
 [[part.voice]]
 id = "lh"
 staff = 2
 clef = "bass"
-bars = ["r:8"]
+bars = [
+  # 1–8  silent
+  "r:8", "r:8", "r:8", "r:8",
+  "r:8", "r:8", "r:8", "r:8",
+  # 9–12 two octaves below the right hand
+  "G2:3 C3:1 D3:2 E3:2",
+  "D3:2 C3:1 B2:1 G2:4",
+  "A2:3 G2:1 F2:2 E2:2",
+  "D2:8~",
+  "D2:8",
+  "r:8", "r:8", "r:8",
+]
