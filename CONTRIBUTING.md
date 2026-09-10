@@ -165,7 +165,8 @@ bars = [
   single most common mistake, and `tools/check.sh` reports it with the bar
   number and what it found.
 - Accidentals are written into the pitch (`Bb3`, `F#5`), never assumed from
-  the key signature. Spelling on the printed page follows `settings.key`.
+  the key signature. The printed page spells each note the way you wrote
+  it, so write `G#` for a leading tone and `Ab` for a flattened sixth.
 - All voices must have the **same number of bars**. When you extend the piece,
   extend every one of the five parts, padding with rests (`r:8`) where a
   player is silent.

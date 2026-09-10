@@ -85,15 +85,23 @@ def note_type(duration: int) -> tuple[str, int]:
          f"Split it into two tied notes (append '~' to the first).")
 
 
-def parse_pitch(text: str) -> int:
+def parse_pitch_spelled(text: str) -> tuple[int, tuple[str, int, int]]:
+    """Pitch text -> (MIDI number, (step, alter, octave) as written)."""
     m = PITCH_RE.match(text)
     if not m:
         fail(f"cannot read pitch {text!r}. Expected a form like A4, Bb3, F#5.")
     alter = m["alter"].count("#") - m["alter"].count("b")
-    midi = 12 * (int(m["octave"]) + 1) + STEP_SEMITONES[m["step"]] + alter
+    if abs(alter) > 2:
+        fail(f"pitch {text!r} has more than a double accidental.")
+    octave = int(m["octave"])
+    midi = 12 * (octave + 1) + STEP_SEMITONES[m["step"]] + alter
     if not 0 <= midi <= 127:
         fail(f"pitch {text!r} is outside the MIDI range.")
-    return midi
+    return midi, (m["step"], alter, octave)
+
+
+def parse_pitch(text: str) -> int:
+    return parse_pitch_spelled(text)[0]
 
 
 def parse_bar(text: str, bar_no: int, voice_id: str) -> list[dict]:
@@ -110,11 +118,19 @@ def parse_bar(text: str, bar_no: int, voice_id: str) -> list[dict]:
         units = int(m["dur"])
         if units < 1:
             fail(f"bar {bar_no}, voice {voice_id!r}: {token!r} has no duration.")
-        pitches = None if raw == "r" else [parse_pitch(p) for p in raw.split(",")]
+        pitches, spelling = None, {}
+        if raw != "r":
+            pitches = []
+            for text in raw.split(","):
+                midi, spelled = parse_pitch_spelled(text)
+                pitches.append(midi)
+                spelling[midi] = spelled
         if pitches is not None and len(set(pitches)) != len(pitches):
             fail(f"bar {bar_no}, voice {voice_id!r}: {token!r} repeats a pitch "
                  f"within one chord.")
-        events.append({"pitches": pitches, "units": units,
+        # The engraved spelling is the one the composer wrote (G# stays G#,
+        # whatever the key signature would prefer); MIDI only knows the number.
+        events.append({"pitches": pitches, "units": units, "spelling": spelling,
                        "tie": bool(m["tie"]), "token": token})
     return events
 
@@ -460,13 +476,15 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                                 '      </note>']
                         continue
                     for n, pitch in enumerate(event["pitches"]):
-                        step, alter, octave = spell(pitch, use_sharps)
+                        step, alter, octave = event.get("spelling", {}).get(
+                            pitch) or spell(pitch, use_sharps)
                         accidental_key = (voice["staff"], step, octave)
                         previous_alter = accidentals.get(
                             accidental_key, key_alters.get(step, 0))
                         printed_accidental = []
                         if alter != previous_alter:
-                            symbol = {-1: "flat", 0: "natural", 1: "sharp"}[alter]
+                            symbol = {-2: "flat-flat", -1: "flat", 0: "natural",
+                                      1: "sharp", 2: "double-sharp"}[alter]
                             printed_accidental = [
                                 f'        <accidental>{symbol}</accidental>']
                         accidentals[accidental_key] = alter
