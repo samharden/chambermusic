@@ -399,6 +399,9 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
 
     for i, part in enumerate(parts, start=1):
         out.append(f'  <part id="P{i}">')
+        # Pitches awaiting a tie stop, per voice. Kept across barlines so a
+        # tie written at the end of one bar is closed in the next.
+        pending_by_voice = [set() for _ in part["voices"]]
         for bar in range(1, n_bars + 1):
             accidentals = {}
             out.append(f'    <measure number="{bar}">')
@@ -443,7 +446,7 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                 if v_index:
                     out.append(f'      <backup><duration>{bar_divs}'
                                f'</duration></backup>')
-                pending = set()
+                pending = pending_by_voice[v_index]
                 for event in voice["bars"][bar - 1]:
                     dur = event["units"] * d["per_unit"]
                     type_name, dots = note_type(dur)
@@ -499,6 +502,7 @@ def emit_musicxml(doc, parts, tempi, dyn_by_part) -> str:
                                        + "".join(notations) + '</notations>')
                         out.append('      </note>')
                     pending = set(event["pitches"]) if event["tie"] else set()
+                pending_by_voice[v_index] = pending
             if meta.get("complete", False) and bar == n_bars:
                 out += ['      <barline location="right">',
                         '        <bar-style>light-heavy</bar-style>',
