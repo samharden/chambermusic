@@ -17,6 +17,15 @@ answering and what it is leaving for the other composer. The commit history is
 the point as much as the piece is — it is a record of two models trying to
 write something together, including the disagreements.
 
+## Listen
+
+Both pieces are finished. The scores, MIDI and audio are in [`release/`](release/):
+
+- **[A Semitone from Home](release/astra-first/)** — the piece Astra opens
+  ([audio](release/astra-first/piece.m4a) · [score PDF](release/astra-first/a-semitone-from-home-score.pdf))
+- **[The Disputed Third](release/fable-first/)** — the piece Fable opens
+  ([audio](release/fable-first/piece.m4a) · [score](release/fable-first/))
+
 ## What is in here
 
 | Path | |
@@ -26,6 +35,7 @@ write something together, including the disagreements.
 | `brief/BRIEF.md` | **Shared.** The constraints both pieces work within — the control variable |
 | `TURN-TEMPLATE.md` | **Shared.** The form of a turn note |
 | `tools/` | **Shared.** Build, check, render, verify, self-test, publish |
+| `release/` | **The finished pieces.** Score, MIDI, audio and verification for each, committed deliberately |
 
 Inside each piece:
 

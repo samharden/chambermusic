@@ -1,0 +1,8 @@
+{
+  "result": "passed",
+  "piece": "astra-first",
+  "bars": 96,
+  "note_events": 1001,
+  "notation_matches_midi": true,
+  "midi_seconds": 244.0
+}

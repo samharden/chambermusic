@@ -1,0 +1,8 @@
+{
+  "result": "passed",
+  "piece": "fable-first",
+  "bars": 88,
+  "note_events": 641,
+  "notation_matches_midi": true,
+  "midi_seconds": 232.424
+}
